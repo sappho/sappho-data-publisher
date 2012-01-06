@@ -13,7 +13,7 @@ class Jira
     id = pageData['id']
     token = @jira.login @config.get('jira.username'), @config.get('jira.password')
     issue = @jira.getIssue token, id
-    pageData['page'] = issue['summary'] if !pageData['page']
+    pageData['pageName'] = issue['summary'] if !pageData['pageName']
     pageData['jiraIssue'] = issue
     customFields = {}
     customFieldValues = issue['customFieldValues']

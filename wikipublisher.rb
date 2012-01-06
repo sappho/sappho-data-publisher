@@ -15,7 +15,10 @@ class WikiPublisher
     @wiki = ConfluenceWiki.new
     pages = []
     getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
-      |pageData| pages.push eval "{ #{pageData} }"
+      |pageData|
+      hash = eval "{ #{pageData} }"
+      page = hash['page']
+      pages.push page if page
     end
     pages.each do |pageData|
       id = pageData['id']
@@ -27,14 +30,13 @@ class WikiPublisher
           @@sources[id].gather pageData, source['parameters']
         end
         space = pageData['space']
-        pageName = pageData['page']
+        pageName = pageData['pageName']
         report "page: #{space}:#{pageName}"
         template = ''
         getScript space, pageData['template'] do
           |templateChunk| template += templateChunk
         end
-        template = Liquid::Template.parse template
-        report template.render 'pageData' => pageData
+        report Liquid::Template.parse(template).render 'pageData' => pageData
       else
         report "**** Not publishing #{id} ****"
       end
