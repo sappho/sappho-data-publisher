@@ -11,6 +11,8 @@ class Jira
 
   def gather pageData, parameters
     id = pageData['id']
+    paramId = parameters['id']
+    id = paramId if paramId
     token = @jira.login @config.get('jira.username'), @config.get('jira.password')
     issue = @jira.getIssue token, id
     pageData['pageName'] = issue['summary'] if !pageData['pageName']
