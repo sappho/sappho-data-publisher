@@ -22,12 +22,10 @@ class Jira
     allCustomFields = @jira.getCustomFields token
     customFieldValues.each do |customFieldValue|
       customFieldId = customFieldValue['customfieldId']
-      allCustomFields.each do |customField|
-        customFields[customFieldId] = {
-            'name' => customField['name'],
-            'value' => customFieldValue['values'].join("\n")
-        } if customFieldId == customField['id']
-      end
+      customFields[customFieldId] = {
+          'name' => allCustomFields.find{|customField| customFieldId == customField['id']}['name'],
+          'values' => customFieldValue['values']
+      }
     end
     pageData['customFields'] = customFields
     @jira.logout token
