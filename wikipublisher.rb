@@ -6,13 +6,9 @@ require 'liquid'
 
 class WikiPublisher
 
-  @@sources = {
-      'jira' => Jira.new
-  }
-
   def publish
-    config = Configuration.new
-    @wiki = ConfluenceWiki.new
+    config = $modules[:config]
+    @wiki = $modules['confluence']
     pages = []
     getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
       |pageData|
@@ -27,7 +23,7 @@ class WikiPublisher
         pageData['sources'].each do |source|
           id = source['source']
           report "source: #{id}"
-          @@sources[id].gather pageData, source['parameters']
+          $modules[id].gather pageData, source['parameters']
         end
         space = pageData['space']
         pageName = pageData['pageName']
@@ -63,9 +59,24 @@ class WikiPublisher
   end
 
   def report message
+    $modules[:logger].report message
+  end
+
+end
+
+class Logger
+
+  def report message
     puts message
   end
 
 end
+
+$modules = {
+    :config => Configuration.new,
+    :logger => Logger.new,
+    'confluence' => ConfluenceWiki.new,
+    'jira' => Jira.new
+}
 
 WikiPublisher.new.publish
