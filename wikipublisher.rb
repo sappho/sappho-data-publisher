@@ -9,7 +9,7 @@ class WikiPublisher
 
   def publish
     config = $modules[:config]
-    @wiki = $modules['confluence']
+    @wiki = ConfluenceWiki.instance
     pages = []
     getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
       |pageData|
@@ -69,8 +69,7 @@ end
 $modules = {
     :config => Configuration.instance,
     :logger => Logger.new,
-    'confluence' => ConfluenceWiki.new,
-    'Jira' => Jira.new
+    'Jira' => Jira.instance
 }
 
 WikiPublisher.new.publish

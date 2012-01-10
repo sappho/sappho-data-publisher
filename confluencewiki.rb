@@ -1,7 +1,10 @@
+require 'singleton'
 require 'Configuration'
 require 'xmlrpc/client'
 
 class ConfluenceWiki
+
+  include Singleton
 
   def initialize
     @config = Configuration.instance
