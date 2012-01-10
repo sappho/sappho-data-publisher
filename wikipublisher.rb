@@ -71,5 +71,7 @@ $modules = {
     :logger => Logger.new,
     'Jira' => Jira.instance
 }
-
 WikiPublisher.new.publish
+Jira.instance.logout
+ConfluenceWiki.instance.logout
+
