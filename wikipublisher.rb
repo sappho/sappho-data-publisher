@@ -32,7 +32,7 @@ class WikiPublisher
         getScript space, pageData['template'] do
           |templateChunk| template += templateChunk
         end
-        content = Liquid::Template.parse(template).render('pageData' => pageData)
+        content = Liquid::Template.parse(template).render('data' => pageData)
         @wiki.publish space, pageData['parent'], pageName, content
       else
         report "**** Not publishing #{id} ****"
@@ -61,7 +61,7 @@ class Logger
 end
 
 $modules = {
-    :config => Configuration.new,
+    :config => Configuration.instance,
     :logger => Logger.new,
     'confluence' => ConfluenceWiki.new,
     'jira' => Jira.new
