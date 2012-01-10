@@ -3,6 +3,7 @@ require 'ConfluenceWiki'
 require 'Jira'
 gem 'liquid'
 require 'liquid'
+require 'yaml'
 
 class WikiPublisher
 
@@ -12,7 +13,7 @@ class WikiPublisher
     pages = []
     getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
       |pageData|
-      hash = eval "{ #{pageData} }"
+      hash = YAML.load pageData
       page = hash['page']
       pages.push page if page
     end
