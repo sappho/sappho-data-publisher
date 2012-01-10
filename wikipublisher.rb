@@ -10,6 +10,7 @@ class WikiPublisher
 
   def publish
     config = Dependencies.instance.modules[:configuration]
+    logger = Dependencies.instance.modules[:logger]
     @wiki = Confluence.instance
     pages = []
     getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
@@ -21,10 +22,10 @@ class WikiPublisher
     pages.each do |pageData|
       id = pageData['id']
       if pageData['publish']
-        report "**** Publishing #{id} ****"
+        logger.report "**** Publishing #{id} ****"
         pageData['sources'].each do |source|
           id = source['source']
-          report "collecting #{id} source data"
+          logger.report "collecting #{id} source data"
           Dependencies.instance.modules[id].gatherData pageData, source['parameters']
         end
         templateSpace = pageData['templatespace']
@@ -33,16 +34,16 @@ class WikiPublisher
         templateName = pageData['template']
         pageName = pageData['pageName']
         parentPageName = pageData['parent']
-        report "using template #{templateSpace}:#{templateName}"
+        logger.report "using template #{templateSpace}:#{templateName}"
         template = ''
         getScript templateSpace, templateName do
           |templateChunk| template += templateChunk
         end
         content = Liquid::Template.parse(template).render('data' => pageData)
-        report "publishing #{publicationSpace}:#{pageName} as child of #{parentPageName}"
+        logger.report "publishing #{publicationSpace}:#{pageName} as child of #{parentPageName}"
         @wiki.publish publicationSpace, parentPageName, pageName, content
       else
-        report "**** Not publishing #{id} ****"
+        logger.report "**** Not publishing #{id} ****"
       end
     end
   end
@@ -51,10 +52,6 @@ class WikiPublisher
     @wiki.getPage(spaceKey, pageName).scan(/\{noformat.*?\}(.*?)\{noformat\}/m).each do
       |pageData| yield pageData[0]
     end
-  end
-
-  def report message
-    Dependencies.instance.modules[:logger].report message
   end
 
 end

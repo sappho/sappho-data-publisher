@@ -8,8 +8,10 @@ class Confluence
 
   def initialize
     config = Dependencies.instance.modules[:configuration]
-    @wiki = XMLRPC::Client.new2("#{config.get 'confluence.url'}/rpc/xmlrpc").proxy('confluence1')
+    url = config.get 'confluence.url'
+    @wiki = XMLRPC::Client.new2("#{url}/rpc/xmlrpc").proxy('confluence1')
     @token = @wiki.login config.get('confluence.username'), config.get('confluence.password')
+    Dependencies.instance.modules[:logger].report "Confluence #{url} is online"
   end
 
   def getPage spaceKey, pageName
