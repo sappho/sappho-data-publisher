@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'Dependencies'
 require 'ConfluenceWiki'
 require 'Jira'
 gem 'liquid'
@@ -24,7 +25,7 @@ class WikiPublisher
         pageData['sources'].each do |source|
           id = source['source']
           report "collecting #{id} source data"
-          $modules[id].gatherData pageData, source['parameters']
+          Dependencies.instance.modules[id].gatherData pageData, source['parameters']
         end
         templateSpace = pageData['templatespace']
         publicationSpace = pageData['publicationspace']
@@ -53,7 +54,7 @@ class WikiPublisher
   end
 
   def report message
-    $modules[:logger].report message
+    Dependencies.instance.modules[:logger].report message
   end
 
 end
@@ -67,7 +68,7 @@ class Logger
 end
 
 Configuration.instance.loadFile ARGV[0]
-$modules = {
+Dependencies.instance.modules = {
     :logger => Logger.new,
     'Jira' => Jira.instance
 }
