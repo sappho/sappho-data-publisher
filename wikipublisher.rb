@@ -23,18 +23,23 @@ class WikiPublisher
         report "**** Publishing #{id} ****"
         pageData['sources'].each do |source|
           id = source['source']
-          report "source: #{id}"
+          report "collecting #{id} source data"
           $modules[id].gather pageData, source['parameters']
         end
-        space = pageData['space']
+        templateSpace = pageData['templatespace']
+        publicationSpace = pageData['publicationspace']
+        publicationSpace = templateSpace unless publicationSpace
+        templateName = pageData['template']
         pageName = pageData['pageName']
-        report "page: #{space}:#{pageName}"
+        parentPageName = pageData['parent']
+        report "using template #{templateSpace}:#{templateName}"
         template = ''
-        getScript space, pageData['template'] do
+        getScript templateSpace, templateName do
           |templateChunk| template += templateChunk
         end
         content = Liquid::Template.parse(template).render('data' => pageData)
-        @wiki.publish space, pageData['parent'], pageName, content
+        report "publishing #{publicationSpace}:#{pageName} as child of #{parentPageName}"
+        @wiki.publish publicationSpace, parentPageName, pageName, content
       else
         report "**** Not publishing #{id} ****"
       end
@@ -65,7 +70,7 @@ $modules = {
     :config => Configuration.instance,
     :logger => Logger.new,
     'confluence' => ConfluenceWiki.new,
-    'jira' => Jira.new
+    'Jira' => Jira.new
 }
 
 WikiPublisher.new.publish
