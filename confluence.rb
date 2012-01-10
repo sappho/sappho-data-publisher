@@ -1,13 +1,13 @@
 require 'singleton'
-require 'Configuration'
+require 'Dependencies'
 require 'xmlrpc/client'
 
-class ConfluenceWiki
+class Confluence
 
   include Singleton
 
   def initialize
-    config = Configuration.instance
+    config = Dependencies.instance.modules[:configuration]
     @wiki = XMLRPC::Client.new2("#{config.get 'confluence.url'}/rpc/xmlrpc").proxy('confluence1')
     @token = @wiki.login config.get('confluence.username'), config.get('confluence.password')
   end

@@ -1,5 +1,5 @@
 require 'singleton'
-require 'Configuration'
+require 'Dependencies'
 require 'soap/wsdlDriver'
 
 class Jira
@@ -7,7 +7,7 @@ class Jira
   include Singleton
 
   def initialize
-    config = Configuration.instance
+    config = Dependencies.instance.modules[:configuration]
     @jira = SOAP::WSDLDriverFactory.new("#{config.get 'jira.url'}/rpc/soap/jirasoapservice-v2?wsdl").
         create_rpc_driver
     @token = @jira.login config.get('jira.username'), config.get('jira.password')

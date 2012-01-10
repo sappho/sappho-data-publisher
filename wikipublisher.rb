@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'Dependencies'
-require 'ConfluenceWiki'
+require 'confluence'
 require 'Jira'
 gem 'liquid'
 require 'liquid'
@@ -9,8 +9,8 @@ require 'yaml'
 class WikiPublisher
 
   def publish
-    config = Configuration.instance
-    @wiki = ConfluenceWiki.instance
+    config = Dependencies.instance.modules[:configuration]
+    @wiki = Confluence.instance
     pages = []
     getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
       |pageData|
@@ -59,6 +59,18 @@ class WikiPublisher
 
 end
 
+class Configuration
+
+  def initialize
+    @config = YAML.load_file ARGV[0]
+  end
+
+  def get key
+    @config[key]
+  end
+
+end
+
 class Logger
 
   def report message
@@ -67,12 +79,14 @@ class Logger
 
 end
 
-Configuration.instance.loadFile ARGV[0]
 Dependencies.instance.modules = {
-    :logger => Logger.new,
-    'Jira' => Jira.instance
+  :configuration => Configuration.new,
+  :logger => Logger.new
 }
+Dependencies.instance.modules = Dependencies.instance.modules.merge({
+  'Jira' => Jira.instance,
+  'Confluence' => Confluence.instance
+})
 WikiPublisher.new.publish
 Jira.instance.logout
-ConfluenceWiki.instance.logout
-
+Confluence.instance.logout
