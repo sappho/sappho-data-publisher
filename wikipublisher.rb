@@ -8,7 +8,7 @@ require 'yaml'
 class WikiPublisher
 
   def publish
-    config = $modules[:config]
+    config = Configuration.instance
     @wiki = ConfluenceWiki.instance
     pages = []
     getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
@@ -24,7 +24,7 @@ class WikiPublisher
         pageData['sources'].each do |source|
           id = source['source']
           report "collecting #{id} source data"
-          $modules[id].gather pageData, source['parameters']
+          $modules[id].gatherData pageData, source['parameters']
         end
         templateSpace = pageData['templatespace']
         publicationSpace = pageData['publicationspace']
@@ -66,8 +66,8 @@ class Logger
 
 end
 
+Configuration.instance.loadFile ARGV[0]
 $modules = {
-    :config => Configuration.instance,
     :logger => Logger.new,
     'Jira' => Jira.instance
 }

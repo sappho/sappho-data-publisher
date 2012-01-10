@@ -7,9 +7,9 @@ class ConfluenceWiki
   include Singleton
 
   def initialize
-    @config = Configuration.instance
-    @wiki = XMLRPC::Client.new2("#{@config.get 'confluence.url'}/rpc/xmlrpc").proxy('confluence1')
-    @token = @wiki.login @config.get('confluence.username'), @config.get('confluence.password')
+    config = Configuration.instance
+    @wiki = XMLRPC::Client.new2("#{config.get 'confluence.url'}/rpc/xmlrpc").proxy('confluence1')
+    @token = @wiki.login config.get('confluence.username'), config.get('confluence.password')
   end
 
   def getPage spaceKey, pageName
@@ -23,10 +23,11 @@ class ConfluenceWiki
       page['content'] = content
     rescue Exception
       page = {
-          'space' => spaceKey,
-          'parentId' => @wiki.getPage(@token, spaceKey, parentPageName)['id'],
-          'title' => pageName,
-          'content' => content }
+        'space' => spaceKey,
+        'parentId' => @wiki.getPage(@token, spaceKey, parentPageName)['id'],
+        'title' => pageName,
+        'content' => content
+      }
     end
     @wiki.storePage @token, page
   end

@@ -5,8 +5,12 @@ class Configuration
 
   include Singleton
 
-  def initialize filename=ARGV[0]
+  def loadFile filename
     @config = YAML.load_file filename
+  end
+
+  def load yaml
+    @config = YAML.load yaml
   end
 
   def get key
