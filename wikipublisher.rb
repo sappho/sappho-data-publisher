@@ -32,7 +32,8 @@ class WikiPublisher
         getScript space, pageData['template'] do
           |templateChunk| template += templateChunk
         end
-        report Liquid::Template.parse(template).render 'pageData' => pageData
+        content = Liquid::Template.parse(template).render('pageData' => pageData)
+        @wiki.publish space, pageData['parent'], pageName, content
       else
         report "**** Not publishing #{id} ****"
       end
@@ -40,21 +41,8 @@ class WikiPublisher
   end
 
   def getScript spaceKey, pageName
-    rawPageContent = @wiki.getPage spaceKey, pageName
-    pageData = nil
-    rawPageContent.each_line do |line|
-      if line =~ /^\{noformat.*\}$/
-        if !pageData
-          pageData = ''
-        else
-          yield pageData
-          pageData = nil
-        end
-      else
-        if pageData
-          pageData += line
-        end
-      end
+    @wiki.getPage(spaceKey, pageName).scan(/\{noformat.*?\}(.*?)\{noformat\}/m).each do
+      |pageData| yield pageData[0]
     end
   end
 
