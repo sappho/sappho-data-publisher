@@ -9,8 +9,8 @@ require 'yaml'
 class WikiPublisher
 
   def publish
-    config = Dependencies.instance.modules[:configuration]
-    logger = Dependencies.instance.modules[:logger]
+    config = Dependencies.instance.get(:configuration)
+    logger = Dependencies.instance.get(:logger)
     @wiki = Confluence.instance
     pages = []
     getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
@@ -22,11 +22,11 @@ class WikiPublisher
     pages.each do |pageData|
       id = pageData['id']
       if pageData['publish']
-        logger.report "**** Publishing #{id} ****"
+        logger.report "---- publishing #{id} ----"
         pageData['sources'].each do |source|
           id = source['source']
           logger.report "collecting #{id} source data"
-          Dependencies.instance.modules[id].gatherData pageData, source['parameters']
+          Dependencies.instance.get(id).gatherData pageData, source['parameters']
         end
         templateSpace = pageData['templatespace']
         publicationSpace = pageData['publicationspace']
@@ -43,7 +43,7 @@ class WikiPublisher
         logger.report "publishing #{publicationSpace}:#{pageName} as child of #{parentPageName}"
         @wiki.publish publicationSpace, parentPageName, pageName, content
       else
-        logger.report "**** Not publishing #{id} ****"
+        logger.report "---- not publishing #{id} ----"
       end
     end
   end
@@ -76,14 +76,10 @@ class Logger
 
 end
 
-Dependencies.instance.modules = {
-  :configuration => Configuration.new,
-  :logger => Logger.new
-}
-Dependencies.instance.modules = Dependencies.instance.modules.merge({
-  'Jira' => Jira.instance,
-  'Confluence' => Confluence.instance
-})
+modules = Dependencies.instance
+modules.set :configuration, Configuration.new
+modules.set :logger, Logger.new
+modules.set 'Jira', Jira.instance
+modules.set 'Confluence', Confluence.instance
 WikiPublisher.new.publish
-Jira.instance.logout
-Confluence.instance.logout
+modules.shutdown

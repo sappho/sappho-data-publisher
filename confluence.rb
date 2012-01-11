@@ -7,11 +7,11 @@ class Confluence
   include Singleton
 
   def initialize
-    config = Dependencies.instance.modules[:configuration]
+    config = Dependencies.instance.get(:configuration)
     url = config.get 'confluence.url'
     @wiki = XMLRPC::Client.new2("#{url}/rpc/xmlrpc").proxy('confluence1')
     @token = @wiki.login config.get('confluence.username'), config.get('confluence.password')
-    Dependencies.instance.modules[:logger].report "Confluence #{url} is online"
+    Dependencies.instance.get(:logger).report "Confluence #{url} is online"
   end
 
   def getPage spaceKey, pageName
@@ -33,8 +33,9 @@ class Confluence
     @wiki.storePage @token, page
   end
 
-  def logout
+  def shutdown
     @wiki.logout @token
+    Dependencies.instance.get(:logger).report 'disconnected from Confluence'
   end
 
 end
