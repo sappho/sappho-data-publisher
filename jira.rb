@@ -16,8 +16,7 @@ class Jira
   def gatherData pageData, parameters
     id = parameters['id']
     issue = @jira.getIssue @token, id
-    pageData['pageName'] = issue['summary'] if !pageData['pageName']
-    pageData['jiraIssue'] = issue
+    pageData['pageName'] = issue['summary'] unless pageData['pageName']
     customFields = {}
     customFieldValues = issue['customFieldValues']
     customFieldValues.each do |customFieldValue|
