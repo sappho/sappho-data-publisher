@@ -16,18 +16,33 @@ class Confluence
     getPage @config.get('confluence.config.space.key'), @config.get('confluence.config.page.name')
   end
 
+  def getTemplate pageData, parameters
+    getPage parameters['templatespace'], parameters['templatepage']
+  end
+
   def getScript rawPage
     rawPage.scan(/\{noformat.*?\}(.*?)\{noformat\}/m).each do
       |pageData| yield pageData[0]
     end
   end
 
+  def publish content, pageData, parameters
+    setPage parameters['space'], parameters['parent'], pageData['pageName'], content
+  end
+
+  def shutdown
+    @wiki.logout @token
+    @logger.report 'disconnected from Confluence'
+  end
+
+  private
+
   def getPage spaceKey, pageName
     @logger.report "reading wiki page #{spaceKey}:#{pageName}"
     @wiki.getPage(@token, spaceKey, pageName)['content']
   end
 
-  def publish spaceKey, parentPageName, pageName, content
+  def setPage spaceKey, parentPageName, pageName, content
     @logger.report "writing wiki page #{spaceKey}:#{pageName} as child of #{parentPageName}"
     begin
       page = @wiki.getPage(@token, spaceKey, pageName)
@@ -41,11 +56,6 @@ class Confluence
       }
     end
     @wiki.storePage @token, page
-  end
-
-  def shutdown
-    @wiki.logout @token
-    @logger.report 'disconnected from Confluence'
   end
 
 end

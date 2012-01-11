@@ -28,20 +28,19 @@ class WikiPublisher
           logger.report "collecting #{id} source data"
           modules.get(id).gatherData pageData, source['parameters']
         end
-        templateSpace = pageData['templatespace']
-        publicationSpace = pageData['publicationspace']
-        publicationSpace = templateSpace unless publicationSpace
-        templateName = pageData['template']
-        pageName = pageData['pageName']
-        parentPageName = pageData['parent']
-        logger.report "processing template"
-        template = ''
-        wiki.getScript wiki.getPage templateSpace, templateName do |templateChunk|
-          template += templateChunk
+        pageData['publications'].each do |publication|
+          id = publication['destination']
+          logger.report "publishing data to #{id}"
+          dest = modules.get(id)
+          params = publication['parameters']
+          rawTemplate = dest.getTemplate pageData, params
+          template = ''
+          dest.getScript rawTemplate do |templateChunk|
+            template += templateChunk
+          end
+          content = Liquid::Template.parse(template).render('data' => pageData)
+          dest.publish content, pageData, params
         end
-        content = Liquid::Template.parse(template).render('data' => pageData)
-        logger.report "publishing generated page"
-        wiki.publish publicationSpace, parentPageName, pageName, content
       else
         logger.report "---- not publishing #{id} ----"
       end

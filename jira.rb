@@ -14,9 +14,7 @@ class Jira
   end
 
   def gatherData pageData, parameters
-    id = pageData['id']
-    paramId = parameters['id']
-    id = paramId if paramId
+    id = parameters['id']
     issue = @jira.getIssue @token, id
     pageData['pageName'] = issue['summary'] if !pageData['pageName']
     pageData['jiraIssue'] = issue
