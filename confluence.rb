@@ -4,11 +4,16 @@ require 'xmlrpc/client'
 class Confluence
 
   def initialize
-    config = Dependencies.instance.get :configuration
-    url = config.get 'confluence.url'
+    @config = Dependencies.instance.get :configuration
+    @logger = Dependencies.instance.get :logger
+    url = @config.get 'confluence.url'
     @wiki = XMLRPC::Client.new2("#{url}/rpc/xmlrpc").proxy('confluence1')
-    @token = @wiki.login config.get('confluence.username'), config.get('confluence.password')
-    Dependencies.instance.get(:logger).report "Confluence #{url} is online"
+    @token = @wiki.login @config.get('confluence.username'), @config.get('confluence.password')
+    @logger.report "Confluence #{url} is online"
+  end
+
+  def getConfiguration
+    getPage @config.get('confluence.config.space.key'), @config.get('confluence.config.page.name')
   end
 
   def getPage spaceKey, pageName
@@ -32,7 +37,7 @@ class Confluence
 
   def shutdown
     @wiki.logout @token
-    Dependencies.instance.get(:logger).report 'disconnected from Confluence'
+    @logger.report 'disconnected from Confluence'
   end
 
 end

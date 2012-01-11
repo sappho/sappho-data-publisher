@@ -5,11 +5,12 @@ class Jira
 
   def initialize
     config = Dependencies.instance.get :configuration
+    @logger = Dependencies.instance.get :logger
     url = config.get 'jira.url'
     @jira = SOAP::WSDLDriverFactory.new("#{url}/rpc/soap/jirasoapservice-v2?wsdl").create_rpc_driver
     @token = @jira.login config.get('jira.username'), config.get('jira.password')
     @allCustomFields = @jira.getCustomFields @token
-    Dependencies.instance.get(:logger).report "Jira #{url} is online"
+    @logger.report "Jira #{url} is online"
   end
 
   def gatherData pageData, parameters
@@ -33,7 +34,7 @@ class Jira
 
   def shutdown
     @jira.logout @token
-    Dependencies.instance.get(:logger).report 'disconnected from Jira'
+    @logger.report 'disconnected from Jira'
   end
 
 end

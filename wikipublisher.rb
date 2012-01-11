@@ -13,8 +13,7 @@ class WikiPublisher
     logger = Dependencies.instance.get :logger
     @wiki = Dependencies.instance.get config.get 'config.wiki'
     pages = []
-    getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
-      |pageData|
+    getScript @wiki.getConfiguration do |pageData|
       hash = YAML.load pageData
       page = hash['page']
       pages.push page if page
@@ -36,7 +35,7 @@ class WikiPublisher
         parentPageName = pageData['parent']
         logger.report "using template #{templateSpace}:#{templateName}"
         template = ''
-        getScript templateSpace, templateName do
+        getScript @wiki.getPage templateSpace, templateName do
           |templateChunk| template += templateChunk
         end
         content = Liquid::Template.parse(template).render('data' => pageData)
@@ -48,8 +47,8 @@ class WikiPublisher
     end
   end
 
-  def getScript spaceKey, pageName
-    @wiki.getPage(spaceKey, pageName).scan(/\{noformat.*?\}(.*?)\{noformat\}/m).each do
+  def getScript rawPage
+    rawPage.scan(/\{noformat.*?\}(.*?)\{noformat\}/m).each do
       |pageData| yield pageData[0]
     end
   end
