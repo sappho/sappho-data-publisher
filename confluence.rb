@@ -43,10 +43,10 @@ class Confluence
   end
 
   def setPage spaceKey, parentPageName, pageName, content
-    @logger.report "writing wiki page #{spaceKey}:#{pageName} as child of #{parentPageName}"
     begin
       page = @wiki.getPage(@token, spaceKey, pageName)
       page['content'] = content
+      @logger.report "rewriting existing wiki page #{spaceKey}:#{pageName}"
     rescue Exception
       page = {
         'space' => spaceKey,
@@ -54,6 +54,7 @@ class Confluence
         'title' => pageName,
         'content' => content
       }
+      @logger.report "creating new wiki page #{spaceKey}:#{pageName} as child of #{parentPageName}"
     end
     @wiki.storePage @token, page
   end
