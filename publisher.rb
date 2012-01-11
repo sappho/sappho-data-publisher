@@ -6,7 +6,7 @@ gem 'liquid'
 require 'liquid'
 require 'yaml'
 
-class WikiPublisher
+class Publisher
 
   def publish
     modules = Modules.instance
@@ -71,5 +71,5 @@ modules.set :configuration, Configuration.new
 modules.set :logger, Logger.new
 modules.set 'Jira', Jira.new
 modules.set 'Confluence', Confluence.new
-WikiPublisher.new.publish
+Publisher.new.publish
 modules.shutdown
