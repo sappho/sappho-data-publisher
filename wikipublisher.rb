@@ -11,9 +11,9 @@ class WikiPublisher
   def publish
     config = Dependencies.instance.get :configuration
     logger = Dependencies.instance.get :logger
-    @wiki = Dependencies.instance.get config.get 'config.wiki'
+    wiki = Dependencies.instance.get config.get 'config.wiki'
     pages = []
-    getScript @wiki.getConfiguration do |pageData|
+    wiki.getScript wiki.getConfiguration do |pageData|
       hash = YAML.load pageData
       page = hash['page']
       pages.push page if page
@@ -35,21 +35,15 @@ class WikiPublisher
         parentPageName = pageData['parent']
         logger.report "using template #{templateSpace}:#{templateName}"
         template = ''
-        getScript @wiki.getPage templateSpace, templateName do
+        wiki.getScript wiki.getPage templateSpace, templateName do
           |templateChunk| template += templateChunk
         end
         content = Liquid::Template.parse(template).render('data' => pageData)
         logger.report "publishing #{publicationSpace}:#{pageName} as child of #{parentPageName}"
-        @wiki.publish publicationSpace, parentPageName, pageName, content
+        wiki.publish publicationSpace, parentPageName, pageName, content
       else
         logger.report "---- not publishing #{id} ----"
       end
-    end
-  end
-
-  def getScript rawPage
-    rawPage.scan(/\{noformat.*?\}(.*?)\{noformat\}/m).each do
-      |pageData| yield pageData[0]
     end
   end
 

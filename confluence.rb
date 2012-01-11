@@ -16,6 +16,12 @@ class Confluence
     getPage @config.get('confluence.config.space.key'), @config.get('confluence.config.page.name')
   end
 
+  def getScript rawPage
+    rawPage.scan(/\{noformat.*?\}(.*?)\{noformat\}/m).each do
+      |pageData| yield pageData[0]
+    end
+  end
+
   def getPage spaceKey, pageName
     @wiki.getPage(@token, spaceKey, pageName)['content']
   end
