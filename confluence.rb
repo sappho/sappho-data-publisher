@@ -27,7 +27,7 @@ class Confluence
   end
 
   def publish content, pageData, parameters
-    setPage parameters['space'], parameters['parent'], pageData['pageName'], content
+    setPage parameters['space'], parameters['parent'], pageData['pagename'], content
   end
 
   def shutdown
