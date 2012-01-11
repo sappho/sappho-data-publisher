@@ -36,8 +36,8 @@ class WikiPublisher
         parentPageName = pageData['parent']
         logger.report "processing template"
         template = ''
-        wiki.getScript wiki.getPage templateSpace, templateName do
-          |templateChunk| template += templateChunk
+        wiki.getScript wiki.getPage templateSpace, templateName do |templateChunk|
+          template += templateChunk
         end
         content = Liquid::Template.parse(template).render('data' => pageData)
         logger.report "publishing generated page"
