@@ -33,7 +33,7 @@ class WikiPublisher
         templateName = pageData['template']
         pageName = pageData['pageName']
         parentPageName = pageData['parent']
-        logger.report "using template #{templateSpace}:#{templateName}"
+        logger.report "processing template #{templateSpace}:#{templateName}"
         template = ''
         wiki.getScript wiki.getPage templateSpace, templateName do
           |templateChunk| template += templateChunk
