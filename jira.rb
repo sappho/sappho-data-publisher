@@ -15,6 +15,7 @@ class Jira
 
   def gatherData pageData, parameters
     id = parameters['id']
+    @logger.report "reading Jira issue #{id}"
     issue = @jira.getIssue @token, id
     pageData['pagename'] = issue['summary'] unless pageData['pagename']
     customFields = {}
