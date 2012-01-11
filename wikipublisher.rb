@@ -10,9 +10,8 @@ class WikiPublisher
 
   def publish
     modules = Modules.instance
-    config = modules.get :configuration
     logger = modules.get :logger
-    configurator = modules.get config.get 'config.module'
+    configurator = modules.get modules.get(:configuration).get 'config.module'
     configurator.getScript configurator.getConfiguration do |configChunk|
       hash = YAML.load configChunk
       pageData = hash['page']
