@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'dependencies'
+require 'modules'
 require 'confluence'
 require 'jira'
 gem 'liquid'
@@ -9,9 +9,10 @@ require 'yaml'
 class WikiPublisher
 
   def publish
-    config = Dependencies.instance.get :configuration
-    logger = Dependencies.instance.get :logger
-    wiki = Dependencies.instance.get config.get 'config.wiki'
+    modules = Modules.instance
+    config = modules.get :configuration
+    logger = modules.get :logger
+    wiki = modules.get config.get 'config.wiki'
     pages = []
     wiki.getScript wiki.getConfiguration do |pageData|
       hash = YAML.load pageData
@@ -25,7 +26,7 @@ class WikiPublisher
         pageData['sources'].each do |source|
           id = source['source']
           logger.report "collecting #{id} source data"
-          Dependencies.instance.get(id).gatherData pageData, source['parameters']
+          modules.get(id).gatherData pageData, source['parameters']
         end
         templateSpace = pageData['templatespace']
         publicationSpace = pageData['publicationspace']
@@ -69,7 +70,7 @@ class Logger
 
 end
 
-modules = Dependencies.instance
+modules = Modules.instance
 modules.set :configuration, Configuration.new
 modules.set :logger, Logger.new
 modules.set 'Jira', Jira.new

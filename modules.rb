@@ -1,6 +1,6 @@
 require 'singleton'
 
-class Dependencies
+class Modules
 
   include Singleton
 

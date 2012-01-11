@@ -1,11 +1,11 @@
-require 'Dependencies'
+require 'modules'
 require 'xmlrpc/client'
 
 class Confluence
 
   def initialize
-    @config = Dependencies.instance.get :configuration
-    @logger = Dependencies.instance.get :logger
+    @config = Modules.instance.get :configuration
+    @logger = Modules.instance.get :logger
     url = @config.get 'confluence.url'
     @wiki = XMLRPC::Client.new2("#{url}/rpc/xmlrpc").proxy('confluence1')
     @token = @wiki.login @config.get('confluence.username'), @config.get('confluence.password')
