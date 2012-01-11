@@ -9,8 +9,7 @@ class Jira
   def initialize
     config = Dependencies.instance.modules[:configuration]
     url = config.get 'jira.url'
-    @jira = SOAP::WSDLDriverFactory.new("#{url}/rpc/soap/jirasoapservice-v2?wsdl").
-        create_rpc_driver
+    @jira = SOAP::WSDLDriverFactory.new("#{url}/rpc/soap/jirasoapservice-v2?wsdl").create_rpc_driver
     @token = @jira.login config.get('jira.username'), config.get('jira.password')
     @allCustomFields = @jira.getCustomFields @token
     Dependencies.instance.modules[:logger].report "Jira #{url} is online"
