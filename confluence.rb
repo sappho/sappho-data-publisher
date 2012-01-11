@@ -19,7 +19,6 @@ class Confluence
   end
 
   def publish spaceKey, parentPageName, pageName, content
-    page = nil
     begin
       page = @wiki.getPage(@token, spaceKey, pageName)
       page['content'] = content
