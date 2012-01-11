@@ -1,10 +1,7 @@
-require 'singleton'
 require 'Dependencies'
 require 'soap/wsdlDriver'
 
 class Jira
-
-  include Singleton
 
   def initialize
     config = Dependencies.instance.get(:configuration)

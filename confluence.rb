@@ -1,10 +1,7 @@
-require 'singleton'
 require 'Dependencies'
 require 'xmlrpc/client'
 
 class Confluence
-
-  include Singleton
 
   def initialize
     config = Dependencies.instance.get(:configuration)

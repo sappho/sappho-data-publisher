@@ -11,7 +11,7 @@ class WikiPublisher
   def publish
     config = Dependencies.instance.get(:configuration)
     logger = Dependencies.instance.get(:logger)
-    @wiki = Confluence.instance
+    @wiki = Dependencies.instance.get('Confluence')
     pages = []
     getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
       |pageData|
@@ -79,7 +79,7 @@ end
 modules = Dependencies.instance
 modules.set :configuration, Configuration.new
 modules.set :logger, Logger.new
-modules.set 'Jira', Jira.instance
-modules.set 'Confluence', Confluence.instance
+modules.set 'Jira', Jira.new
+modules.set 'Confluence', Confluence.new
 WikiPublisher.new.publish
 modules.shutdown
