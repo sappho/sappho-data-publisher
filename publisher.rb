@@ -29,9 +29,8 @@ class Publisher
             logger.report "publishing data to #{id}"
             dest = modules.get(id)
             params = publication['parameters']
-            rawTemplate = dest.getTemplate pageData, params
             template = ''
-            dest.getScript rawTemplate do |templateChunk|
+            dest.getScript dest.getTemplate pageData, params do |templateChunk|
               template += templateChunk
             end
             content = Liquid::Template.parse(template).render('data' => pageData)
