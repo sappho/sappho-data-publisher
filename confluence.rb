@@ -23,10 +23,12 @@ class Confluence
   end
 
   def getPage spaceKey, pageName
+    @logger.report "reading wiki page #{spaceKey}:#{pageName}"
     @wiki.getPage(@token, spaceKey, pageName)['content']
   end
 
   def publish spaceKey, parentPageName, pageName, content
+    @logger.report "writing wiki page #{spaceKey}:#{pageName} as child of #{parentPageName}"
     begin
       page = @wiki.getPage(@token, spaceKey, pageName)
       page['content'] = content

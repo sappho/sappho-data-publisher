@@ -33,13 +33,13 @@ class WikiPublisher
         templateName = pageData['template']
         pageName = pageData['pageName']
         parentPageName = pageData['parent']
-        logger.report "processing template #{templateSpace}:#{templateName}"
+        logger.report "processing template"
         template = ''
         wiki.getScript wiki.getPage templateSpace, templateName do
           |templateChunk| template += templateChunk
         end
         content = Liquid::Template.parse(template).render('data' => pageData)
-        logger.report "publishing #{publicationSpace}:#{pageName} as child of #{parentPageName}"
+        logger.report "publishing generated page"
         wiki.publish publicationSpace, parentPageName, pageName, content
       else
         logger.report "---- not publishing #{id} ----"
