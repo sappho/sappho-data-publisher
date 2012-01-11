@@ -1,7 +1,7 @@
 require 'rubygems'
-require 'Dependencies'
+require 'dependencies'
 require 'confluence'
-require 'Jira'
+require 'jira'
 gem 'liquid'
 require 'liquid'
 require 'yaml'
@@ -9,9 +9,9 @@ require 'yaml'
 class WikiPublisher
 
   def publish
-    config = Dependencies.instance.get(:configuration)
-    logger = Dependencies.instance.get(:logger)
-    @wiki = Dependencies.instance.get('Confluence')
+    config = Dependencies.instance.get :configuration
+    logger = Dependencies.instance.get :logger
+    @wiki = Dependencies.instance.get config.get 'config.wiki'
     pages = []
     getScript config.get('confluence.config.space.key'), config.get('confluence.config.page.name') do
       |pageData|

@@ -4,7 +4,7 @@ require 'soap/wsdlDriver'
 class Jira
 
   def initialize
-    config = Dependencies.instance.get(:configuration)
+    config = Dependencies.instance.get :configuration
     url = config.get 'jira.url'
     @jira = SOAP::WSDLDriverFactory.new("#{url}/rpc/soap/jirasoapservice-v2?wsdl").create_rpc_driver
     @token = @jira.login config.get('jira.username'), config.get('jira.password')
