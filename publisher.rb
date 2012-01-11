@@ -33,8 +33,7 @@ class Publisher
             dest.getScript dest.getTemplate pageData, params do |templateChunk|
               template += templateChunk
             end
-            content = Liquid::Template.parse(template).render('data' => pageData)
-            dest.publish content, pageData, params
+            dest.publish Liquid::Template.parse(template).render('data' => pageData), pageData, params
           end
         else
           logger.report "---- not publishing #{id} ----"
