@@ -11,6 +11,7 @@ class Jira
     @token = @jira.login config.get('jira.username'), config.get('jira.password')
     @allCustomFields = @jira.getCustomFields @token
     @logger.warn "Jira #{url} is online"
+    @users = {}
   end
 
   def gatherData pageData, parameters
@@ -28,6 +29,13 @@ class Jira
       }
     end
     pageData['customFields'] = customFields
+  end
+
+  def getUser username
+    user = @users[username]
+    return user if user
+    @logger.warn "reading Jira user details for #{username}"
+    @users[username] = @jira.getUser @token, username
   end
 
   def shutdown

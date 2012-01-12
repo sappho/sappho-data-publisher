@@ -4,6 +4,7 @@ require 'publisher'
 require 'configuration'
 require 'confluence'
 require 'jira'
+require 'custom_liquid'
 
 logger = Logger.new STDOUT
 logger.level = Logger::WARN
@@ -14,6 +15,8 @@ modules.set :logger, logger
 modules.set :configuration, Configuration.new
 modules.set 'Jira', Jira.new
 modules.set 'Confluence', Confluence.new
+
+CustomLiquid.setup
 
 Publisher.new.publish
 
