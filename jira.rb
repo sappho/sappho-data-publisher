@@ -10,12 +10,12 @@ class Jira
     @jira = SOAP::WSDLDriverFactory.new("#{url}/rpc/soap/jirasoapservice-v2?wsdl").create_rpc_driver
     @token = @jira.login config.get('jira.username'), config.get('jira.password')
     @allCustomFields = @jira.getCustomFields @token
-    @logger.report "Jira #{url} is online"
+    @logger.warn "Jira #{url} is online"
   end
 
   def gatherData pageData, parameters
     id = parameters['id']
-    @logger.report "reading Jira issue #{id}"
+    @logger.warn "reading Jira issue #{id}"
     issue = @jira.getIssue @token, id
     pageData['pagename'] = issue['summary'] unless pageData['pagename']
     customFields = {}
@@ -32,7 +32,7 @@ class Jira
 
   def shutdown
     @jira.logout @token
-    @logger.report 'disconnected from Jira'
+    @logger.warn 'disconnected from Jira'
   end
 
 end

@@ -1,7 +1,5 @@
 require 'rubygems'
 require 'modules'
-require 'confluence'
-require 'jira'
 gem 'liquid'
 require 'liquid'
 require 'yaml'
@@ -18,15 +16,15 @@ class Publisher
       if pageData
         id = pageData['id']
         if pageData['publish']
-          logger.report "---- publishing #{id} ----"
+          logger.warn "---- publishing #{id} ----"
           pageData['sources'].each do |source|
             id = source['source']
-            logger.report "collecting #{id} source data"
+            logger.warn "collecting #{id} source data"
             modules.get(id).gatherData pageData, source['parameters']
           end
           pageData['publications'].each do |publication|
             id = publication['destination']
-            logger.report "publishing data to #{id}"
+            logger.warn "publishing data to #{id}"
             dest = modules.get(id)
             params = publication['parameters']
             template = ''
@@ -36,38 +34,10 @@ class Publisher
             dest.publish Liquid::Template.parse(template).render('data' => pageData), pageData, params
           end
         else
-          logger.report "---- not publishing #{id} ----"
+          logger.warn "---- not publishing #{id} ----"
         end
       end
     end
   end
 
 end
-
-class Configuration
-
-  def initialize
-    @config = YAML.load_file ARGV[0]
-  end
-
-  def get key
-    @config[key]
-  end
-
-end
-
-class Logger
-
-  def report message
-    puts message
-  end
-
-end
-
-modules = Modules.instance
-modules.set :configuration, Configuration.new
-modules.set :logger, Logger.new
-modules.set 'Jira', Jira.new
-modules.set 'Confluence', Confluence.new
-Publisher.new.publish
-modules.shutdown
