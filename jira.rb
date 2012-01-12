@@ -19,6 +19,7 @@ class Jira
     @logger.warn "reading Jira issue #{id}"
     issue = @jira.getIssue @token, id
     pageData['pagename'] = issue['summary'] unless pageData['pagename']
+    pageData['description'] = issue['description']
     customFields = {}
     customFieldValues = issue['customFieldValues']
     customFieldValues.each do |customFieldValue|
