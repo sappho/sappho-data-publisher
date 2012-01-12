@@ -8,18 +8,22 @@ class Modules
     @modules = {}
   end
 
-  def set key, mod
-    @modules[key] = mod
+  def set name, mod
+    @modules[name] = mod
   end
 
-  def get key
-    @modules[key]
+  def get name
+    @modules[name]
   end
 
   def shutdown
-    @modules.each do |key, mod|
+    each { |name, mod| mod.shutdown }
+  end
+
+  def each
+    @modules.each do |name, mod|
       begin
-        mod.shutdown
+        yield name, mod
       rescue
       end
     end
