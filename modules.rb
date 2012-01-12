@@ -20,7 +20,7 @@ class Modules
     @modules.each do |key, mod|
       begin
         mod.shutdown
-      rescue Exception
+      rescue
       end
     end
   end

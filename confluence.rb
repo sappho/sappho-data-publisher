@@ -47,7 +47,7 @@ class Confluence
       page = @wiki.getPage(@token, spaceKey, pageName)
       page['content'] = content
       @logger.warn "rewriting existing wiki page #{spaceKey}:#{pageName}"
-    rescue Exception
+    rescue
       page = {
         'space' => spaceKey,
         'parentId' => @wiki.getPage(@token, spaceKey, parentPageName)['id'],
