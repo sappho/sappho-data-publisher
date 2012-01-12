@@ -14,7 +14,11 @@ class CustomLiquid
   module Filters
 
     def fullname username
-      Modules.instance.get(Jira).getUser(username)['fullname']
+      begin
+        Modules.instance.get(Jira).getUser(username)['fullname']
+      rescue
+        '** John Doe **'
+      end
     end
 
     def blank text
