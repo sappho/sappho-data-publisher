@@ -17,13 +17,13 @@ class Modules
   end
 
   def shutdown
-    each { |name, mod| mod.shutdown }
+    each { |mod| mod.shutdown }
   end
 
   def each
     @modules.each do |name, mod|
       begin
-        yield name, mod
+        yield mod
       rescue
       end
     end
