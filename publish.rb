@@ -13,7 +13,9 @@ logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
 modules = Modules.instance
 modules.set :logger, logger
 modules.set :configuration, Configuration.new
-modules.set 'Jira', Jira.new
+jira = Jira.new
+modules.set 'Jira', jira
+modules.set 'AddressBook', jira
 modules.set 'Confluence', Confluence.new
 
 CustomLiquid.setup

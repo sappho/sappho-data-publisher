@@ -5,8 +5,6 @@ require 'liquid'
 
 class CustomLiquid
 
-  Jira = 'Jira'
-
   def CustomLiquid.setup
     Liquid::Template.register_filter(Filters)
   end
@@ -15,7 +13,7 @@ class CustomLiquid
 
     def fullname username
       begin
-        Modules.instance.get(Jira).getUser(username)['fullname']
+        Modules.instance.get('AddressBook').getUser(username)['fullname']
       rescue
         '** John Doe **'
       end
