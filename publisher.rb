@@ -10,31 +10,26 @@ class Publisher
     modules = Modules.instance
     logger = modules.get :logger
     configurator = modules.get modules.get(:configuration).get 'config.module'
+    globalScript = ''
+    configurator.getScript(configurator.getGlobalConfiguration) { |configChunk| globalScript += configChunk }
     configurator.getScript configurator.getConfiguration do |configChunk|
-      hash = YAML.load configChunk
-      pageData = hash['page']
+      allData = YAML.load(globalScript + configChunk)
+      pageData = allData['page']
       if pageData
-        id = pageData['id']
-        if pageData['publish']
-          logger.warn "---- publishing #{id} ----"
-          pageData['sources'].each do |source|
-            id = source['source']
-            logger.warn "collecting #{id} source data"
-            modules.get(id).gatherData pageData, source['parameters']
-          end
-          pageData['publications'].each do |publication|
-            id = publication['destination']
-            logger.warn "publishing data to #{id}"
-            dest = modules.get(id)
-            params = publication['parameters']
-            template = ''
-            dest.getScript dest.getTemplate pageData, params do |templateChunk|
-              template += templateChunk
-            end
-            dest.publish Liquid::Template.parse(template).render('data' => pageData), pageData, params
-          end
-        else
-          logger.warn "---- not publishing #{id} ----"
+        logger.warn "---- publishing #{allData['id']} ----"
+        pageData['sources'].each do |source|
+          id = source['source']
+          logger.warn "collecting #{id} source data"
+          modules.get(id).gatherData pageData, source['parameters']
+        end
+        pageData['publications'].each do |publication|
+          id = publication['destination']
+          logger.warn "publishing data to #{id}"
+          dest = modules.get(id)
+          params = publication['parameters']
+          template = ''
+          dest.getScript(dest.getTemplate pageData, params) { |templateChunk| template += templateChunk }
+          dest.publish Liquid::Template.parse(template).render('data' => pageData), pageData, params
         end
       end
     end

@@ -12,6 +12,12 @@ class Confluence
     @logger.warn "Confluence #{url} is online"
   end
 
+  def getGlobalConfiguration
+    pageName = @config.get('confluence.global.config.page.name')
+    return getPage @config.get('confluence.config.space.key'), pageName if pageName
+    ''
+  end
+
   def getConfiguration
     getPage @config.get('confluence.config.space.key'), @config.get('confluence.config.page.name')
   end
