@@ -18,7 +18,9 @@ class Jira
     id = parameters['id']
     @logger.warn "reading Jira issue #{id}"
     issue = @jira.getIssue @token, id
-    pageData['pagename'] = issue['summary'] unless pageData['pagename']
+    summary = issue['summary']
+    pageData['summary'] = summary
+    pageData['pagename'] = summary unless pageData['pagename']
     pageData['description'] = issue['description']
     customFields = {}
     customFieldValues = issue['customFieldValues']
