@@ -16,7 +16,7 @@ class Publisher
       allData = YAML.load(globalScript + configChunk)
       pageData = allData['page']
       if pageData
-        logger.warn "---- publishing #{allData['id']} ----"
+        logger.warn "---- publishing #{pageData['id']} ----"
         pageData['sources'].each do |source|
           id = source['source']
           logger.warn "collecting #{id} source data"
