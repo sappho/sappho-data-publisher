@@ -17,8 +17,7 @@ jira = Jira.new
 modules.set 'Jira', jira
 modules.set 'AddressBook', jira
 modules.set 'Confluence', Confluence.new
-
-CustomLiquid.setup
+CustomLiquid.new
 
 Publisher.new.publish
 
