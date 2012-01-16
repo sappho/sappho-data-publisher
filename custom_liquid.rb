@@ -13,7 +13,7 @@ class CustomLiquid
 
     def fullname username
       begin
-        Modules.instance.get('AddressBook').getUser(username)['fullname']
+        Modules.instance.get('AddressBook').getUserFullName(username)
       rescue
         '** John Doe **'
       end

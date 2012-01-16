@@ -34,11 +34,13 @@ class Jira
     pageData['customFields'] = customFields
   end
 
-  def getUser username
+  def getUserFullName username
     user = @users[username]
-    return user if user
-    @logger.warn "reading Jira user details for #{username}"
-    @users[username] = @jira.getUser @token, username
+    unless user
+      @logger.warn "reading Jira user details for #{username}"
+      @users[username] = user = @jira.getUser(@token, username)
+    end
+    user['fullname']
   end
 
   def shutdown
