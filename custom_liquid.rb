@@ -20,9 +20,7 @@ class CustomLiquid
     end
 
     def blank text
-      text = text.join.strip if text
-      return "This information has not been supplied." unless text and text.length > 0
-      text
+      (text || ["This field is undefined."]).join.strip
     end
 
   end
