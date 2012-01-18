@@ -23,13 +23,11 @@ class Jira
     pageData['description'] = issue['description']
     pageData['customFields'] = customFields = {}
     customFieldValues = issue['customFieldValues']
-    customFieldValues.each do |customFieldValue|
-      customFieldId = customFieldValue['customfieldId']
-      customFields[customFieldId] = {
+    customFieldValues.each { |customFieldValue|
+      customFields[customFieldId = customFieldValue['customfieldId']] = {
           'name' => @allCustomFields.find{|customField| customFieldId == customField['id']}['name'],
           'values' => customFieldValue['values']
-      }
-    end
+      }}
   end
 
   def getUserFullName username
