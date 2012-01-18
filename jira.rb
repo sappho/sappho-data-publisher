@@ -21,7 +21,7 @@ class Jira
     pageData['summary'] = summary = issue['summary']
     pageData['pagename'] = summary unless pageData['pagename']
     pageData['description'] = issue['description']
-    customFields = {}
+    pageData['customFields'] = customFields = {}
     customFieldValues = issue['customFieldValues']
     customFieldValues.each do |customFieldValue|
       customFieldId = customFieldValue['customfieldId']
@@ -30,7 +30,6 @@ class Jira
           'values' => customFieldValue['values']
       }
     end
-    pageData['customFields'] = customFields
   end
 
   def getUserFullName username
