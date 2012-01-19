@@ -7,7 +7,7 @@ require 'jira'
 require 'custom_liquid'
 
 logger = Logger.new STDOUT
-logger.level = Logger::WARN
+logger.level = Logger::INFO
 logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
 
 modules = Modules.instance

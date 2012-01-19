@@ -9,7 +9,7 @@ class Confluence
     url = @config.get 'confluence.url'
     @wiki = XMLRPC::Client.new2("#{url}/rpc/xmlrpc").proxy('confluence1')
     @token = @wiki.login @config.get('confluence.username'), @config.get('confluence.password')
-    @logger.warn "Confluence #{url} is online"
+    @logger.info "Confluence #{url} is online"
   end
 
   def getGlobalConfiguration
@@ -38,13 +38,13 @@ class Confluence
 
   def shutdown
     @wiki.logout @token
-    @logger.warn 'disconnected from Confluence'
+    @logger.info 'disconnected from Confluence'
   end
 
   private
 
   def getPage spaceKey, pageName
-    @logger.warn "reading wiki page #{spaceKey}:#{pageName}"
+    @logger.info "reading wiki page #{spaceKey}:#{pageName}"
     @wiki.getPage(@token, spaceKey, pageName)['content']
   end
 
@@ -52,7 +52,7 @@ class Confluence
     begin
       page = @wiki.getPage(@token, spaceKey, pageName)
       page['content'] = content
-      @logger.warn "rewriting existing wiki page #{spaceKey}:#{pageName}"
+      @logger.info "rewriting existing wiki page #{spaceKey}:#{pageName}"
     rescue
       page = {
         'space' => spaceKey,
@@ -60,7 +60,7 @@ class Confluence
         'title' => pageName,
         'content' => content
       }
-      @logger.warn "creating new wiki page #{spaceKey}:#{pageName} as child of #{parentPageName}"
+      @logger.info "creating new wiki page #{spaceKey}:#{pageName} as child of #{parentPageName}"
     end
     @wiki.storePage @token, page
   end

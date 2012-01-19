@@ -16,15 +16,15 @@ class Publisher
       allData = YAML.load(globalScript + configChunk)
       pageData = allData['page']
       if pageData
-        logger.warn "---- publishing #{pageData['id']} ----"
+        logger.info "---- publishing #{pageData['id']} ----"
         pageData['sources'].each do |source|
           id = source['source']
-          logger.warn "collecting #{id} source data"
+          logger.info "collecting #{id} source data"
           modules.get(id).gatherData pageData, source['parameters']
         end
         pageData['publications'].each do |publication|
           id = publication['destination']
-          logger.warn "publishing data to #{id}"
+          logger.info "publishing data to #{id}"
           dest = modules.get(id)
           params = publication['parameters']
           template = ''
