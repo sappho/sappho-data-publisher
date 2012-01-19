@@ -19,7 +19,7 @@ class CustomLiquid
       end
     end
 
-    def blank text
+    def join text
       (text || ["This field is undefined."]).join.strip
     end
 
