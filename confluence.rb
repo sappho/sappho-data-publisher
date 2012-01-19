@@ -27,9 +27,7 @@ class Confluence
   end
 
   def getScript rawPage
-    rawPage.scan(/\{noformat.*?\}(.*?)\{noformat\}/m).each do
-      |pageData| yield pageData[0]
-    end
+    rawPage.scan(/\{noformat.*?\}(.*?)\{noformat\}/m).each { |pageData| yield pageData[0] }
   end
 
   def publish content, pageData, parameters
@@ -58,8 +56,7 @@ class Confluence
         'space' => spaceKey,
         'parentId' => @wiki.getPage(@token, spaceKey, parentPageName)['id'],
         'title' => pageName,
-        'content' => content
-      }
+        'content' => content }
       @logger.info "creating new wiki page #{spaceKey}:#{pageName} as child of #{parentPageName}"
     end
     @wiki.storePage @token, page

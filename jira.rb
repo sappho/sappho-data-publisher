@@ -25,8 +25,8 @@ class Jira
     customFieldValues = issue['customFieldValues']
     customFieldValues.each { |customFieldValue|
       customFields[customFieldId = customFieldValue['customfieldId']] = {
-          'name' => @allCustomFields.find{|customField| customFieldId == customField['id']}['name'],
-          'values' => customFieldValue['values']
+        'name' => @allCustomFields.find{|customField| customFieldId == customField['id']}['name'],
+        'values' => customFieldValue['values']
       }}
   end
 
