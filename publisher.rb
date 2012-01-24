@@ -9,7 +9,7 @@ class Publisher
   def publish
     modules = Modules.instance
     logger = modules.get :logger
-    configurator = modules.get modules.get(:configuration).get 'config.module'
+    configurator = modules.get modules.get(:configuration).data['config.module']
     globalScript = ''
     configurator.getScript(configurator.getGlobalConfiguration) { |configChunk| globalScript += configChunk }
     configurator.getScript configurator.getConfiguration do |configChunk|

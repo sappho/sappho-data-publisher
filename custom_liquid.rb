@@ -5,7 +5,7 @@ require 'liquid'
 
 class CustomLiquid
 
-  def initialize
+  def CustomLiquid.setup
     Liquid::Template.register_filter(Filters)
   end
 

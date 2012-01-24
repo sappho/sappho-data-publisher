@@ -6,9 +6,9 @@ class Jira
   def initialize
     config = Modules.instance.get :configuration
     @logger = Modules.instance.get :logger
-    url = config.get 'jira.url'
+    url = config.data['jira.url']
     @jira = SOAP::WSDLDriverFactory.new("#{url}/rpc/soap/jirasoapservice-v2?wsdl").create_rpc_driver
-    @token = @jira.login config.get('jira.username'), config.get('jira.password')
+    @token = @jira.login config.data['jira.username'], config.data['jira.password']
     @allCustomFields = @jira.getCustomFields @token
     @logger.info "Jira #{url} is online"
     @users = {}

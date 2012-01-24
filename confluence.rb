@@ -6,20 +6,20 @@ class Confluence
   def initialize
     @config = Modules.instance.get :configuration
     @logger = Modules.instance.get :logger
-    url = @config.get 'confluence.url'
+    url = @config.data['confluence.url']
     @wiki = XMLRPC::Client.new2("#{url}/rpc/xmlrpc").proxy('confluence1')
-    @token = @wiki.login @config.get('confluence.username'), @config.get('confluence.password')
+    @token = @wiki.login @config.data['confluence.username'], @config.data['confluence.password']
     @logger.info "Confluence #{url} is online"
   end
 
   def getGlobalConfiguration
-    pageName = @config.get('confluence.global.config.page.name')
-    return getPage @config.get('confluence.config.space.key'), pageName if pageName
+    pageName = @config.data['confluence.global.config.page.name']
+    return getPage @config.data['confluence.config.space.key'], pageName if pageName
     ''
   end
 
   def getConfiguration
-    getPage @config.get('confluence.config.space.key'), @config.get('confluence.config.page.name')
+    getPage @config.data['confluence.config.space.key'], @config.data['confluence.config.page.name']
   end
 
   def getTemplate pageData, parameters
