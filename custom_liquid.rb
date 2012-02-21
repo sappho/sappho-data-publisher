@@ -7,6 +7,7 @@ class CustomLiquid
 
   def CustomLiquid.setup
     Liquid::Template.register_filter(Filters)
+    Liquid::Template.register_tag('squash', Squash)
   end
 
   module Filters
@@ -21,6 +22,20 @@ class CustomLiquid
 
     def join text
       (text || ["This field is undefined."]).join.strip
+    end
+
+  end
+
+  class Squash < Liquid::Block
+
+    def initialize tag_name, markup, tokens
+       super
+    end
+
+    def render context
+      wiki = []
+      super.each { |line| wiki << line unless line.strip == ''}
+      wiki.join
     end
 
   end
