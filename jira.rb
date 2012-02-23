@@ -29,19 +29,8 @@ class Jira
       }
     }
     issue['customFieldValues'].each { |customFieldValue|
-      rawValues = customFieldValue['values']
-      if rawValues
-        values = []
-        rawValues.each { |value|
-          begin
-            value = Integer value
-            value = value.to_s
-          rescue
-          end
-          values << value
-        }
-        customFields[customFieldValue['customfieldId']]['values'] = values if values.size > 0
-      end
+      values = customFieldValue['values']
+      customFields[customFieldValue['customfieldId']]['values'] = values if values
     }
   end
 
