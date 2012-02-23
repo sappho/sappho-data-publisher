@@ -22,12 +22,27 @@ class Jira
     pageData['pagename'] = summary unless pageData['pagename']
     pageData['description'] = issue['description']
     pageData['customFields'] = customFields = {}
-    customFieldValues = issue['customFieldValues']
-    customFieldValues.each { |customFieldValue|
-      customFields[customFieldId = customFieldValue['customfieldId']] = {
-        'name' => @allCustomFields.find{|customField| customFieldId == customField['id']}['name'],
-        'values' => customFieldValue['values']
-      }}
+    @allCustomFields.each { |customField|
+      customFields[customField['id']] = {
+          'name' => customField['name'],
+          'values' => nil
+      }
+    }
+    issue['customFieldValues'].each { |customFieldValue|
+      rawValues = customFieldValue['values']
+      if rawValues
+        values = []
+        rawValues.each { |value|
+          begin
+            value = Integer value
+            value = value.to_s
+          rescue
+          end
+          values << value
+        }
+        customFields[customFieldValue['customfieldId']]['values'] = values if values.size > 0
+      end
+    }
   end
 
   def getUserFullName username
