@@ -1,1 +1,1 @@
-See https://github.com/sappho/sappho-data-publisher/wiki for project documentation.
+See https://github.com/sappho/sappho-data-publisher/wiki for project documentation and license terms.
