@@ -4,9 +4,9 @@
 # Copyright 2012 Andrew Heald.
 
 require 'rubygems'
-require 'modules'
 gem 'liquid'
 require 'liquid'
+require 'sappho-data-publisher/modules'
 
 module Sappho
   module Data
