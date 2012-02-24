@@ -36,7 +36,7 @@ module Sappho
           def initialize tag_name, markup, tokens
             super
             @message = (markup ? markup.to_s : '')
-            @message = @message.length > 0 ? @message : '_This information has not been supplied._'
+            @message = @message.length > 0 ? @message : 'This information has not been supplied.'
           end
 
           def render context
