@@ -29,8 +29,7 @@ class Jira
       }
     }
     issue['customFieldValues'].each { |customFieldValue|
-      values = customFieldValue['values']
-      customFields[customFieldValue['customfieldId']]['values'] = values if values
+      customFields[customFieldValue['customfieldId']]['values'] = customFieldValue['values']
     }
   end
 
