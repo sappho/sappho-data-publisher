@@ -1,5 +1,5 @@
 .idea
-*.yml
+test-config/*
 *.gem
 .bundle
 Gemfile.lock
