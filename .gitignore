@@ -1,2 +1,6 @@
-/.idea
-config.yml
+.idea
+*.yml
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
