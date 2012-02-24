@@ -5,33 +5,41 @@
 
 require 'singleton'
 
-class Modules
+module Sappho
+  module Data
+    module Publisher
 
-  include Singleton
+      class Modules
 
-  def initialize
-    @modules = {}
-  end
+        include Singleton
 
-  def set name, mod
-    @modules[name] = mod
-  end
+        def initialize
+          @modules = {}
+        end
 
-  def get name
-    @modules[name]
-  end
+        def set name, mod
+          @modules[name] = mod
+        end
 
-  def shutdown
-    each { |mod| mod.shutdown }
-  end
+        def get name
+          @modules[name]
+        end
 
-  def each
-    @modules.each do |name, mod|
-      begin
-        yield mod
-      rescue
+        def shutdown
+          each { |mod| mod.shutdown }
+        end
+
+        def each
+          @modules.each do |name, mod|
+            begin
+              yield mod
+            rescue
+            end
+          end
+        end
+
       end
+
     end
   end
-
 end

@@ -6,14 +6,22 @@
 require 'modules'
 require 'yaml'
 
-class Configuration
+module Sappho
+  module Data
+    module Publisher
 
-  attr_reader :data
+      class Configuration
 
-  def initialize
-    filename = File.expand_path(ARGV[0] || 'config.yml')
-    @data = YAML.load_file filename
-    Modules.instance.get(:logger).warn "configuration loaded from #{filename}"
+        attr_reader :data
+
+        def initialize
+          filename = File.expand_path(ARGV[0] || 'config.yml')
+          @data = YAML.load_file filename
+          Modules.instance.get(:logger).warn "configuration loaded from #{filename}"
+        end
+
+      end
+
+    end
   end
-
 end
