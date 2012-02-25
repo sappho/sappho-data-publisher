@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Sappho::Data::Publisher::VERSION
   s.authors     = ["Andrew Heald"]
   s.email       = ["andrew@heald.co.uk"]
-  s.homepage    = "https://github.com/sappho/sappho-data-publisher/wiki"
+  s.homepage    = Sappho::Data::Publisher::HOMEPAGE
   s.summary     = "Publishes aggregated data to formatted pages on a wiki"
   s.description = "See the project home page for more information"
 

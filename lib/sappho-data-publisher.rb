@@ -22,7 +22,7 @@ module Sappho
           logger = Logger.new STDOUT
           logger.level = Logger::INFO
           logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
-          logger.info "sappho-data-publisher version #{VERSION}"
+          logger.info "sappho-data-publisher version #{VERSION} - #{HOMEPAGE}"
           modules = Modules.instance
           modules.set :logger, logger
           modules.set :configuration, Configuration.new
