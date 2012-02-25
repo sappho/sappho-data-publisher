@@ -2,6 +2,8 @@
 $:.push File.expand_path("../lib", __FILE__)
 require "sappho-data-publisher/version"
 
+# See http://docs.rubygems.org/read/chapter/20#page85 for info on writing gemspecs
+
 Gem::Specification.new do |s|
   s.name        = "sappho-data-publisher"
   s.version     = Sappho::Data::Publisher::VERSION
