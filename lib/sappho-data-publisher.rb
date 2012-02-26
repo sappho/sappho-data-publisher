@@ -18,7 +18,7 @@ module Sappho
 
       class CommandLine
 
-        def run
+        def CommandLine.process
           logger = Logger.new STDOUT
           logger.level = Logger::INFO
           logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
