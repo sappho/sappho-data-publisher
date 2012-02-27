@@ -52,8 +52,11 @@ module Sappho
         end
 
         def shutdown
-          @jira.logout @token
-          @logger.info 'disconnected from Jira'
+          if @jira
+            @jira.logout @token
+            @jira = nil
+            @logger.info 'disconnected from Jira'
+          end
         end
 
       end
