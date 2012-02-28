@@ -17,6 +17,7 @@ module Sappho
         def CustomLiquid.setup
           Liquid::Template.register_filter(Fullname)
           Liquid::Template.register_tag('squash', Squash)
+          Liquid::Template.register_tag('empty', Empty)
         end
 
         module Fullname
@@ -43,6 +44,14 @@ module Sappho
             wiki = []
             super.each { |line| wiki << line unless line.strip == ''}
             wiki.size > 0 ? wiki.join : @message
+          end
+
+        end
+
+        class Empty < Liquid::Block
+
+          def render context
+            ''
           end
 
         end
