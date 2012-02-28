@@ -6,7 +6,7 @@
 module Sappho
   module Data
     module Publisher
-      VERSION = "0.1.1"
+      VERSION = "0.1.2"
       HOMEPAGE = "https://github.com/sappho/sappho-data-publisher/wiki"
     end
   end
