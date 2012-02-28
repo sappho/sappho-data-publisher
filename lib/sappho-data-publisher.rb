@@ -19,7 +19,8 @@ module Sappho
       class CommandLine
 
         def CommandLine.process
-          logger = Logger.new STDOUT
+          $stdout.sync = true
+          logger = Logger.new $stdout
           logger.level = Logger::INFO
           logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
           logger.info "sappho-data-publisher version #{VERSION} - #{HOMEPAGE}"
