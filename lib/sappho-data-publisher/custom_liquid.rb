@@ -50,7 +50,12 @@ module Sappho
 
         class Empty < Liquid::Block
 
+          def initialize tag_name, markup, tokens
+            super
+          end
+
           def render context
+            super
             ''
           end
 
