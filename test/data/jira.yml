@@ -1,7 +1,9 @@
 users:
 
-  cgrant: Cary Grant
-  bholiday: Billie Holiday
+  cgrant:
+    fullname: Cary Grant
+  bholiday:
+    fullname: Billie Holiday
 
 issues:
 
