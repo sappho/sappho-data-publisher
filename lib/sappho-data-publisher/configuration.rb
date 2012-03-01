@@ -14,10 +14,10 @@ module Sappho
 
         attr_reader :data
 
-        def initialize
-          filename = File.expand_path(ARGV[0] || 'config.yml')
+        def initialize filename = ARGV[0]
+          filename = File.expand_path(filename || 'config.yml')
           @data = YAML.load_file filename
-          Modules.instance.get(:logger).warn "configuration loaded from #{filename}"
+          Modules.instance.get(:logger).info "configuration loaded from #{filename}"
         end
 
       end

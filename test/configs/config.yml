@@ -1,0 +1,10 @@
+config.module: Confluence
+confluence.url: https://wiki.example.com
+confluence.username: wikiuser
+confluence.password: secretwikipassword
+confluence.config.space.key: MYSPACE
+confluence.global.config.page.name: Global Macros
+confluence.config.page.name: Page Specification
+jira.url: https://jira.example.com
+jira.username: jiraadminuser
+jira.password: secretjirapassword

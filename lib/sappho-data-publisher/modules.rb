@@ -25,6 +25,10 @@ module Sappho
           @modules[name]
         end
 
+        def set? name
+          @modules.has_key? name
+        end
+
         def shutdown
           each { |mod| mod.shutdown }
         end

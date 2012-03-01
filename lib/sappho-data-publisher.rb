@@ -27,7 +27,9 @@ module Sappho
           modules = Modules.instance
           modules.set :logger, logger
           modules.set :configuration, Configuration.new
-          modules.set 'Jira', (jira = Jira.new)
+          jira = Jira.new
+          jira.connect
+          modules.set 'Jira', jira
           modules.set 'AddressBook', jira
           modules.set 'Confluence', Confluence.new
           CustomLiquid.setup

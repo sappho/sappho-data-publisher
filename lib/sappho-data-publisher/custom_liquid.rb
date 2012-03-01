@@ -24,10 +24,12 @@ module Sappho
 
           def fullname username
             begin
-              Modules.instance.get('AddressBook').getUserFullName(username)
+              name = Modules.instance.get('AddressBook').getUserFullName(username)
+              raise 'unknown person' unless name and name.length > 0
             rescue
-              '** John Doe **'
+              name = '** John Doe **'
             end
+            name
           end
 
         end
