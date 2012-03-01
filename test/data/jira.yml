@@ -1,0 +1,17 @@
+token: a-token-string
+users:
+  cgrant: Cary Grant
+  bholiday: Billie Holiday
+issues:
+  TEST-42:
+    summary: Testing 123
+    description: This is a test.
+    customFieldValues:
+      customfieldId: abc
+      values:
+        - xyz
+all_custom_fields:
+  - id: abc
+    name: xyz
+  - id: def
+    name: pqr

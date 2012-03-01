@@ -1,5 +1,6 @@
 require "test/unit"
 require 'logger'
+require 'yaml'
 require 'sappho-data-publisher/modules'
 require 'sappho-data-publisher/configuration'
 require 'sappho-data-publisher/jira'
@@ -8,22 +9,12 @@ module Sappho
   module Data
     module Publisher
 
+      DIR = "#{File.dirname(__FILE__)}/../"
+      DATA = YAML.load_file "#{DIR}data/jira.yml"
+      USERS = DATA['users']
+      ISSUES = DATA['issues']
+      ALL_CUSTOM_FIELDS = DATA['all_custom_fields']
       TOKEN = 'a-token-string'
-      USERS = {
-          'cgrant' => 'Cary Grant',
-          'bholiday' => 'Billie Holiday'
-      }
-      ISSUES = {
-          'TEST-42' => { 'summary' => '', 'description' => '', 'customFieldValues' => [
-              { 'customfieldId' => '', 'values' => [''] }
-          ] }
-      }
-      ALL_CUSTOM_FIELDS = [
-          { 'id' => '', 'name' => ''},
-          { 'id' => '', 'name' => ''},
-          { 'id' => '', 'name' => ''},
-          { 'id' => '', 'name' => ''}
-      ]
 
       class JiraTest < Test::Unit::TestCase
 
@@ -32,8 +23,7 @@ module Sappho
           @logger.level = Logger::DEBUG
           modules = Modules.instance
           modules.set :logger, @logger
-          modules.set :configuration, Configuration.new(
-              "#{File.dirname(__FILE__)}/../../test/configs/config.yml")
+          modules.set :configuration, Configuration.new("#{DIR}configs/config.yml")
           @mockJira = MockJira.new
           modules.set :mockJira, @mockJira
           @jira = Jira.new
@@ -55,7 +45,7 @@ module Sappho
         def test_get_user_full_name
           # check a valid name but before connecting to Jira
           username = 'cgrant'
-          name = USERS[username]
+          name = 'Cary Grant'
           assert_raise RuntimeError do
             @jira.getUserFullName username
           end
@@ -70,7 +60,7 @@ module Sappho
           assert_equal @mockJira.getNameCount, count
           # this won't be cached
           username = 'bholiday'
-          name = USERS[username]
+          name = 'Billie Holiday'
           assert_equal name, @jira.getUserFullName(username)
           assert_equal @mockJira.getNameCount, (count += 1)
           # check an invalid name
