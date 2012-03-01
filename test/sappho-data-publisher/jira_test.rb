@@ -4,8 +4,8 @@ require 'yaml'
 require 'sappho-data-publisher/modules'
 require 'sappho-data-publisher/configuration'
 require 'sappho-data-publisher/jira'
-TESTDIR = File.dirname(__FILE__)
-require "#{TESTDIR}/mock_jira"
+require "#{File.dirname(__FILE__)}/mock_jira"
+require "#{File.dirname(__FILE__)}/test_helper"
 
 module Sappho
   module Data
@@ -13,16 +13,12 @@ module Sappho
 
       class JiraTest < Test::Unit::TestCase
 
+        include TestHelper
+
         def setup
-          @logger = Logger.new STDOUT
-          @logger.level = Logger::DEBUG
-          modules = Modules.instance
-          modules.set :logger, @logger
-          modules.set :configuration, Configuration.new("#{TESTDIR}/../config/config.yml")
-          @mockJira = MockJira.new
-          modules.set :mockJira, @mockJira
-          @jira = Jira.new
-          modules.set 'Jira', @jira
+          setupLogging
+          setupConfiguration
+          setupJira 'Jira'
         end
 
         def teardown

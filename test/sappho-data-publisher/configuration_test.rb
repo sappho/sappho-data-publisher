@@ -1,6 +1,7 @@
 require "test/unit"
 require 'logger'
 require 'sappho-data-publisher/configuration'
+require "#{File.dirname(__FILE__)}/test_helper"
 
 module Sappho
   module Data
@@ -8,10 +9,10 @@ module Sappho
 
       class ConfigurationTest < Test::Unit::TestCase
 
+        include TestHelper
+
         def setup
-          logger = Logger.new STDOUT
-          logger.level = Logger::DEBUG
-          Modules.instance.set :logger, logger
+          setupLogging
           @config = Configuration.new("#{File.dirname(__FILE__)}/../data/config.yml").data
           assert_not_nil @config
         end
