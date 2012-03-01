@@ -23,7 +23,7 @@ module Sappho
           @logger.level = Logger::DEBUG
           modules = Modules.instance
           modules.set :logger, @logger
-          modules.set :configuration, Configuration.new("#{DIR}configs/config.yml")
+          modules.set :configuration, Configuration.new("#{DIR}config/config.yml")
           @mockJira = MockJira.new
           modules.set :mockJira, @mockJira
           @jira = Jira.new
