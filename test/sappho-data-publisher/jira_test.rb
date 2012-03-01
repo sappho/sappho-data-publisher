@@ -64,13 +64,14 @@ module Sappho
           assert_equal name, @jira.getUserFullName(username)
           assert_equal @mockJira.getNameCount, (count += 1)
           # check an invalid name
+          username = 'nobody'
           assert_raise RuntimeError do
-            @jira.getUserFullName('nobody')
+            @jira.getUserFullName(username)
           end
           assert_equal @mockJira.getNameCount, (count += 1)
           # check an invalid name - there should be no caching
           assert_raise RuntimeError do
-            @jira.getUserFullName('nobody')
+            @jira.getUserFullName(username)
           end
           assert_equal @mockJira.getNameCount, (count += 1)
         end
