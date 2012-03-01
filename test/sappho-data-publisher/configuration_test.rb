@@ -1,6 +1,3 @@
-require "test/unit"
-require 'logger'
-require 'sappho-data-publisher/configuration'
 require "#{File.dirname(__FILE__)}/test_helper"
 
 module Sappho

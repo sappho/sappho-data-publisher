@@ -17,8 +17,9 @@ module Sappho
           Modules.instance.set :logger, @logger
         end
 
-        def setupConfiguration
-          Modules.instance.set :configuration, Configuration.new("#{File.dirname(__FILE__)}/../config/config.yml")
+        def setupConfiguration filename = "#{File.dirname(__FILE__)}/../config/config.yml"
+          config = Configuration.new filename
+          Modules.instance.set :configuration, config
         end
 
         def setupJira moduleName

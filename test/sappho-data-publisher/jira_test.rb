@@ -1,10 +1,3 @@
-require "test/unit"
-require 'logger'
-require 'yaml'
-require 'sappho-data-publisher/modules'
-require 'sappho-data-publisher/configuration'
-require 'sappho-data-publisher/jira'
-require "#{File.dirname(__FILE__)}/mock_jira"
 require "#{File.dirname(__FILE__)}/test_helper"
 
 module Sappho
