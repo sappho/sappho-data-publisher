@@ -1,0 +1,8 @@
+{% squash nothing %}User with username cgrant is {{ 'cgrant' | fullname }}.{% endsquash %}
+User with username nobody is {{ 'nobody' | fullname }}.
+{% squash nothing%}{% endsquash %}
+{% empty %}
+This stuff will be disposed of.
+This line too!
+{% endempty %}
+{% squash blank%}     {% endsquash %}

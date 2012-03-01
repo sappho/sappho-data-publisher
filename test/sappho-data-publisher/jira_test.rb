@@ -4,17 +4,12 @@ require 'yaml'
 require 'sappho-data-publisher/modules'
 require 'sappho-data-publisher/configuration'
 require 'sappho-data-publisher/jira'
+TESTDIR = File.dirname(__FILE__)
+require "#{TESTDIR}/mock_jira"
 
 module Sappho
   module Data
     module Publisher
-
-      DIR = "#{File.dirname(__FILE__)}/../"
-      DATA = YAML.load_file "#{DIR}data/jira.yml"
-      USERS = DATA['users']
-      ISSUES = DATA['issues']
-      ALL_CUSTOM_FIELDS = DATA['all_custom_fields']
-      TOKEN = 'a-token-string'
 
       class JiraTest < Test::Unit::TestCase
 
@@ -23,7 +18,7 @@ module Sappho
           @logger.level = Logger::DEBUG
           modules = Modules.instance
           modules.set :logger, @logger
-          modules.set :configuration, Configuration.new("#{DIR}config/config.yml")
+          modules.set :configuration, Configuration.new("#{TESTDIR}/../config/config.yml")
           @mockJira = MockJira.new
           modules.set :mockJira, @mockJira
           @jira = Jira.new
@@ -78,69 +73,6 @@ module Sappho
 
         def test_data_gathering
           connect
-        end
-
-      end
-
-      class MockJira
-
-        attr_reader :getNameCount
-
-        def initialize
-          @loggedIn = false
-          @getNameCount = 0
-        end
-
-        def mockInstance url
-          check_not_logged_in
-          assert_expected 'URL', url, 'https://jira.example.com'
-          self
-        end
-
-        def login username, password
-          check_not_logged_in
-          assert_expected 'username', username, 'jiraadminuser'
-          assert_expected 'password', password, 'secretjirapassword'
-          @loggedIn = true
-          TOKEN
-        end
-
-        def logout token
-          assert_token_valid token
-          @loggedIn = false
-        end
-
-        def getCustomFields token
-          assert_token_valid token
-          ALL_CUSTOM_FIELDS
-        end
-
-        def getIssue token, id
-          assert_token_valid token
-          raise 'issue does not exist' unless ISSUES.has_key? id
-          ISSUES[id]
-        end
-
-        def getUser token, username
-          assert_token_valid token
-          @getNameCount += 1
-          raise 'user unknown' unless USERS.has_key? username
-          USERS[username]
-        end
-
-        private
-
-        def check_not_logged_in
-          raise 'you should not be logged in yet but you are' if @loggedIn
-        end
-
-        def assert_expected description, actual, expected
-          raise "MockJira expected #{description} of #{expected} but got #{actual}" unless actual == expected
-        end
-
-        def assert_token_valid token
-          raise 'you should be logged in by now but you are not' unless @loggedIn
-          assert_expected 'token', token, TOKEN
         end
 
       end
