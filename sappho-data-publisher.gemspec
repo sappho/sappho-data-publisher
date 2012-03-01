@@ -5,19 +5,19 @@ require "sappho-data-publisher/version"
 # See http://docs.rubygems.org/read/chapter/20#page85 for info on writing gemspecs
 
 Gem::Specification.new do |s|
-  s.name        = "sappho-data-publisher"
+  s.name        = Sappho::Data::Publisher::NAME
   s.version     = Sappho::Data::Publisher::VERSION
-  s.authors     = ["Andrew Heald"]
-  s.email       = ["andrew@heald.co.uk"]
+  s.authors     = Sappho::Data::Publisher::AUTHORS
+  s.email       = Sappho::Data::Publisher::EMAILS
   s.homepage    = Sappho::Data::Publisher::HOMEPAGE
-  s.summary     = "Publishes aggregated data to formatted pages on a wiki"
-  s.description = "See the project home page for more information"
+  s.summary     = Sappho::Data::Publisher::SUMMARY
+  s.description = Sappho::Data::Publisher::DESCRIPTION
 
-  s.rubyforge_project = "sappho-data-publisher"
+  s.rubyforge_project = Sappho::Data::Publisher::NAME
 
-  s.files         = `git ls-files -- {bin,lib}/*`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.files         = Dir['bin/*'] + Dir['lib/**/*']
+  s.test_files    = Dir['test/**/*'] + Dir['spec/**/*'] + Dir['features/**/*']
+  s.executables   = Dir['bin/*'].map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
   # specify any dependencies here; for example:

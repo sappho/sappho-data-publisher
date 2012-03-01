@@ -6,8 +6,13 @@
 module Sappho
   module Data
     module Publisher
-      VERSION = "0.1.6"
-      HOMEPAGE = "https://github.com/sappho/sappho-data-publisher/wiki"
+      NAME = 'sappho-data-publisher'
+      VERSION = '0.1.7'
+      AUTHORS = ['Andrew Heald']
+      EMAILS = ['andrew@heald.co.uk']
+      HOMEPAGE = 'https://github.com/sappho/sappho-data-publisher/wiki'
+      SUMMARY = 'Publishes aggregated data to formatted pages on a wiki'
+      DESCRIPTION = 'See the project home page for more information'
     end
   end
 end
