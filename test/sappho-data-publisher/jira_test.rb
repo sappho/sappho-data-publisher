@@ -18,6 +18,12 @@ module Sappho
               { 'customfieldId' => '', 'values' => [''] }
           ] }
       }
+      ALL_CUSTOM_FIELDS = [
+          { 'id' => '', 'name' => ''},
+          { 'id' => '', 'name' => ''},
+          { 'id' => '', 'name' => ''},
+          { 'id' => '', 'name' => ''}
+      ]
 
       class JiraTest < Test::Unit::TestCase
 
@@ -110,12 +116,13 @@ module Sappho
 
         def getCustomFields token
           assert_token_valid token
-          [
-              { 'id' => '', 'name' => ''},
-              { 'id' => '', 'name' => ''},
-              { 'id' => '', 'name' => ''},
-              { 'id' => '', 'name' => ''}
-          ]
+          ALL_CUSTOM_FIELDS
+        end
+
+        def getIssue token, id
+          assert_token_valid token
+          raise 'issue does not exist' unless ISSUES.has_key? id
+          ISSUES[id]
         end
 
         def getUser token, username
