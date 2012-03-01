@@ -55,27 +55,28 @@ module Sappho
           end
           # now connect to allow the test to proceed
           connect
+          count = 0
           # check a valid name
           assert_equal name, @jira.getUserFullName(username)
-          assert_equal @mockJira.getNameCount, 1
+          assert_equal @mockJira.getNameCount, (count += 1)
           # test name caching
           assert_equal name, @jira.getUserFullName(username)
-          assert_equal @mockJira.getNameCount, 1
-          # this won't be cached'
+          assert_equal @mockJira.getNameCount, count
+          # this won't be cached
           username = 'bholiday'
           name = USERS[username]
           assert_equal name, @jira.getUserFullName(username)
-          assert_equal @mockJira.getNameCount, 2
+          assert_equal @mockJira.getNameCount, (count += 1)
           # check an invalid name
           assert_raise RuntimeError do
             @jira.getUserFullName('nobody')
           end
-          assert_equal @mockJira.getNameCount, 3
+          assert_equal @mockJira.getNameCount, (count += 1)
           # check an invalid name - there should be no caching
           assert_raise RuntimeError do
             @jira.getUserFullName('nobody')
           end
-          assert_equal @mockJira.getNameCount, 4
+          assert_equal @mockJira.getNameCount, (count += 1)
         end
 
         def test_data_gathering
