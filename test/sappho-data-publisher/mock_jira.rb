@@ -8,8 +8,8 @@ module Sappho
 
         attr_reader :getNameCount
 
-        def initialize
-          data = YAML.load_file "#{File.dirname(__FILE__)}/../data/jira.yml"
+        def initialize filename = "#{File.dirname(__FILE__)}/../data/jira.yml"
+          data = YAML.load_file filename
           @users = data['users']
           @issues = data['issues']
           @allCustomFields = data['all_custom_fields']
