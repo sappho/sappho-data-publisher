@@ -3,6 +3,8 @@ User with username nobody is {{ 'nobody' | fullname }}.
 {% squash nothing%}{% endsquash %}
 {% empty %}
 This stuff will be disposed of.
-This line too!
+{% assign answer = 42 %}
+The above assign should be executed, however, even though nothing will be output here.
 {% endempty %}
 {% squash blank%}     {% endsquash %}
+The answer to the ultimate question of life, the universe, and everything, is {{ answer }}.
