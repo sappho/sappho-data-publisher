@@ -27,44 +27,53 @@ module Sappho
         end
 
         def test_get_user_full_name
+          @getUserCount = 0
           # check a valid name but before connecting to Jira
-          username = 'cgrant'
-          name = 'Cary Grant'
-          assert_raise RuntimeError do
-            @jira.getUserFullName username
-          end
+          @username = 'cgrant'
+          @fullName = 'Cary Grant'
+          assert_full_name_failure
           # now connect to allow the test to proceed
           connect
-          count = 0
           # check a valid name
-          assert_equal name, @jira.getUserFullName(username)
-          assert_equal @mockJira.getNameCount, (count += 1)
+          assert_full_name
           # test name caching
-          assert_equal name, @jira.getUserFullName(username)
-          assert_equal @mockJira.getNameCount, count
+          assert_full_name 0
           # this won't be cached
-          username = 'bholiday'
-          name = 'Billie Holiday'
-          assert_equal name, @jira.getUserFullName(username)
-          assert_equal @mockJira.getNameCount, (count += 1)
+          @username = 'bholiday'
+          @fullName = 'Billie Holiday'
+          assert_full_name
           # check an invalid name
-          username = 'nobody'
-          assert_raise RuntimeError do
-            @jira.getUserFullName(username)
-          end
-          assert_equal @mockJira.getNameCount, (count += 1)
+          @username = 'nobody'
+          assert_full_name_failure
           # check an invalid name - there should be no caching
-          assert_raise RuntimeError do
-            @jira.getUserFullName(username)
-          end
-          assert_equal @mockJira.getNameCount, (count += 1)
+          assert_full_name_failure
+          assert_get_user_count 2
+          # check a valid name again
+          @username = 'cgrant'
+          @fullName = 'Cary Grant'
+          assert_full_name 0
         end
 
         def test_data_gathering
           connect
         end
 
-      end
+        def assert_full_name inc = 1
+          assert_equal @fullName, @jira.getUserFullName(@username), "Incorrect full name obtained for user #{@username}"
+          assert_get_user_count inc
+        end
+
+        def assert_get_user_count inc
+          assert_equal (@getUserCount += inc), @mockJira.getUserCount, 'Incorrect number of calls to Jira\'s getUser function'
+        end
+
+        def assert_full_name_failure
+          assert_raise RuntimeError do
+            assert_full_name
+          end
+        end
+
+       end
 
     end
   end

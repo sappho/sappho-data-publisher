@@ -15,7 +15,7 @@ module Sappho
         end
 
         def test_data_exists
-          assert_equal @config['places']['Paris']['country'], 'France'
+          assert_equal 'France', @config['places']['Paris']['country']
         end
 
         def test_data_missing

@@ -6,7 +6,7 @@ module Sappho
 
       class MockJira
 
-        attr_reader :getNameCount
+        attr_reader :getUserCount
 
         def initialize filename = "#{File.dirname(__FILE__)}/../data/jira.yml"
           data = YAML.load_file filename
@@ -15,7 +15,7 @@ module Sappho
           @allCustomFields = data['all_custom_fields']
           @token = 'a-token-string'
           @loggedIn = false
-          @getNameCount = 0
+          @getUserCount = 0
         end
 
         def mockInstance url
@@ -50,7 +50,7 @@ module Sappho
 
         def getUser token, username
           assert_token_valid token
-          @getNameCount += 1
+          @getUserCount += 1
           raise 'user unknown' unless @users.has_key? username
           @users[username]
         end
