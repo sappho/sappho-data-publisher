@@ -1,0 +1,40 @@
+TEST-42-A:
+  summary: Testing 123
+  pagename: Testing 123
+  description: This is a test.
+  customFields:
+    customfield_10500:
+      name: Service
+      values:
+    customfield_10501:
+      name: Type
+      values:
+        - Business Process
+    customfield_10502:
+      name: Invoice Number
+      values:
+    customfield_10503:
+      name: Customer
+      values:
+        - Bank of England
+
+TEST-42-B:
+  summary: Testing 123
+  pagename: Test Page
+  description: This is a test.
+  customFields:
+    customfield_10500:
+      name: Service
+      values:
+    customfield_10501:
+      name: Type
+      values:
+        - Business Process
+    customfield_10502:
+      name: Invoice Number
+      values:
+    customfield_10503:
+      name: Customer
+      values:
+        - Bank of England
+

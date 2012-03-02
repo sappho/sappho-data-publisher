@@ -12,6 +12,7 @@ module Sappho
           setupLogging
           setupConfiguration
           setupJira 'Jira'
+          @expectedResults = YAML.load_file "#{File.dirname(__FILE__)}/../data/jira-results.yml"
         end
 
         def teardown
@@ -54,17 +55,46 @@ module Sappho
           assert_full_name 0
         end
 
-        def test_data_gathering
+        def test_data_gathering_pagename_as_summary
+          # pagename will be a copy of the issue summary
+          assert_data_gathered({}, { 'id' => 'TEST-42' }, 'TEST-42-A')
+        end
+
+        def test_data_gathering_pagename_as_supplied
+          # pagename supplied already so should not be set by data gatherer
+          assert_data_gathered({ 'pagename' => 'Test Page' }, { 'id' => 'TEST-42' }, 'TEST-42-B')
+        end
+
+        def test_data_gathering_from_invalid_issue
+          assert_raise RuntimeError do
+            assert_data_gathered({}, { 'id' => 'TEST-999' }, nil)
+          end
+        end
+
+        def test_data_gathering_without_connecting
+          assert_raise RuntimeError do
+            # this would be okay if connected, but we're not
+            assert_data_gathered({}, { 'id' => 'TEST-42' }, 'TEST-42-A', true)
+          end
+          # keep the teardown happy by connecting anyway
           connect
         end
 
+        def assert_data_gathered pageData, parameters, expectedResults, noConnect = false
+          connect unless noConnect
+          @jira.gatherData pageData, parameters
+          assert_equal @expectedResults[expectedResults], pageData
+        end
+
         def assert_full_name inc = 1
-          assert_equal @fullName, @jira.getUserFullName(@username), "Incorrect full name obtained for user #{@username}"
+          assert_equal @fullName, @jira.getUserFullName(@username),
+                       "Incorrect full name obtained for user #{@username}"
           assert_get_user_count inc
         end
 
         def assert_get_user_count inc
-          assert_equal (@getUserCount += inc), @mockJira.getUserCount, 'Incorrect number of calls to Jira\'s getUser function'
+          assert_equal (@getUserCount += inc), @mockJira.getUserCount,
+                       'Incorrect number of calls to Jira\'s getUser function'
         end
 
         def assert_full_name_failure

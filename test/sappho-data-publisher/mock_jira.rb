@@ -44,7 +44,7 @@ module Sappho
 
         def getIssue token, id
           assert_token_valid token
-          raise 'issue does not exist' unless ISSUES.has_key? id
+          raise 'issue does not exist' unless @issues.has_key? id
           @issues[id]
         end
 

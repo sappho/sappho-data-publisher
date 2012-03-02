@@ -1,5 +1,6 @@
 require "test/unit"
 require 'logger'
+require 'yaml'
 require 'sappho-data-publisher/modules'
 require 'sappho-data-publisher/configuration'
 require 'sappho-data-publisher/jira'

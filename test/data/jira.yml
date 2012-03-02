@@ -11,13 +11,20 @@ issues:
     summary: Testing 123
     description: This is a test.
     customFieldValues:
-      customfieldId: abc
-      values:
-        - xyz
+      - customfieldId: customfield_10501
+        values:
+          - Business Process
+      - customfieldId: customfield_10503
+        values:
+          - Bank of England
 
 all_custom_fields:
 
-  - id: abc
-    name: xyz
-  - id: def
-    name: pqr
+  - id: customfield_10500
+    name: Service
+  - id: customfield_10501
+    name: Type
+  - id: customfield_10502
+    name: Invoice Number
+  - id: customfield_10503
+    name: Customer
