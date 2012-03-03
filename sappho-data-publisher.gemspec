@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = Sappho::Data::Publisher::NAME
 
   s.files         = Dir['bin/*'] + Dir['lib/**/*']
-  s.test_files    = Dir['test/**/*'] + Dir['spec/**/*'] + Dir['features/**/*']
+  s.test_files    = Dir['test/**/*']
   s.executables   = Dir['bin/*'].map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
