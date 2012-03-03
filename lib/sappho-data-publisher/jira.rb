@@ -38,15 +38,14 @@ module Sappho
           pageData['summary'] = summary = issue['summary']
           pageData['pagename'] = summary unless pageData['pagename']
           pageData['description'] = issue['description']
-          pageData['customFields'] = customFields = {}
           @allCustomFields.each { |customField|
-            customFields[customField['id']] = {
+            pageData[customField['id']] = {
                 'name' => customField['name'],
                 'values' => nil
             }
           }
           issue['customFieldValues'].each { |customFieldValue|
-            customFields[customFieldValue['customfieldId']]['values'] = customFieldValue['values']
+            pageData[customFieldValue['customfieldId']]['values'] = customFieldValue['values']
           }
         end
 
