@@ -1,9 +1,10 @@
+# Data injected into mock Jira when Jira and custom Liquid tests run
+# See http://yaml.org/spec for syntax help
+
 users:
 
-  cgrant:
-    fullname: Cary Grant
-  bholiday:
-    fullname: Billie Holiday
+  cgrant:   { fullname: Cary Grant }
+  bholiday: { fullname: Billie Holiday }
 
 issues:
 
@@ -11,20 +12,12 @@ issues:
     summary: Testing 123
     description: This is a test.
     customFieldValues:
-      - customfieldId: customfield_10501
-        values:
-          - Business Process
-      - customfieldId: customfield_10503
-        values:
-          - Bank of England
+      - { customfieldId: customfield_10501, values: [ Business Process ] }
+      - { customfieldId: customfield_10503, values: [ Bank of England ] }
 
 all_custom_fields:
 
-  - id: customfield_10500
-    name: Service
-  - id: customfield_10501
-    name: Type
-  - id: customfield_10502
-    name: Invoice Number
-  - id: customfield_10503
-    name: Customer
+  - { id: customfield_10500, name: Service }
+  - { id: customfield_10501, name: Type }
+  - { id: customfield_10502, name: Invoice Number }
+  - { id: customfield_10503, name: Customer }

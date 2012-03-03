@@ -38,14 +38,13 @@ module Sappho
           pageData['summary'] = summary = issue['summary']
           pageData['pagename'] = summary unless pageData['pagename']
           pageData['description'] = issue['description']
+          pageData['cf'] = customFields = {}
           @allCustomFields.each { |customField|
-            pageData[customField['id']] = {
-                'name' => customField['name'],
-                'values' => nil
-            }
+            customFields[cfname customField['id']] = { 'name' => customField['name'] }
           }
           issue['customFieldValues'].each { |customFieldValue|
-            pageData[customFieldValue['customfieldId']]['values'] = customFieldValue['values']
+            customFields[cfname customFieldValue['customfieldId']]['values'] =
+                customFieldValue['values']
           }
         end
 
@@ -76,6 +75,10 @@ module Sappho
 
         def checkLoggedIn
           raise 'you are not logged in to Jira' unless loggedIn?
+        end
+
+        def cfname name
+          name.sub /customfield_/, ''
         end
 
       end
