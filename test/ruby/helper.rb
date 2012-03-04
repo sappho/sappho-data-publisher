@@ -11,7 +11,7 @@ require 'sappho-data-publisher/configuration'
 require 'sappho-data-publisher/jira'
 require 'mock_jira'
 
-module TestHelper
+class Test::Unit::TestCase
 
   def setupLogging
     @logger = Logger.new STDOUT

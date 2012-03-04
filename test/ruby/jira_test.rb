@@ -3,11 +3,9 @@
 # See http://www.gnu.org/licenses/agpl.html for full details of the license terms.
 # Copyright 2012 Andrew Heald.
 
-require 'test_helper'
+require 'helper'
 
 class JiraTest < Test::Unit::TestCase
-
-  include TestHelper
 
   def setup
     setupLogging

@@ -4,14 +4,12 @@
 # Copyright 2012 Andrew Heald.
 
 require 'rubygems'
-gem 'liquid'
+gem 'liquid', '>= 2.3.0'
 require 'liquid'
 require 'sappho-data-publisher/custom_liquid'
-require 'test_helper'
+require 'helper'
 
 class CustomLiquidTest < Test::Unit::TestCase
-
-  include TestHelper
 
   def setup
     setupLogging
