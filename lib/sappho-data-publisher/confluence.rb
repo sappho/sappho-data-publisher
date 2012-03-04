@@ -12,7 +12,7 @@ module Sappho
 
       class Confluence
 
-        def initialize
+        def connect
           @config = Modules.instance.get :configuration
           @logger = Modules.instance.get :logger
           url = @config.data['confluence.url']

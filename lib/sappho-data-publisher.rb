@@ -31,7 +31,9 @@ module Sappho
           jira.connect
           modules.set 'Jira', jira
           modules.set 'AddressBook', jira
-          modules.set 'Confluence', Confluence.new
+          confluence = Confluence.new
+          confluence.connect
+          modules.set 'Confluence', confluence
           CustomLiquid.setup
           Publisher.new.publish
           modules.shutdown

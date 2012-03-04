@@ -31,6 +31,13 @@ class Test::Unit::TestCase
     Sappho::Data::Publisher::Modules.instance.set moduleName, @jira
   end
 
+  def setupConfluence moduleName
+    @mockConfluence = MockConfluence.new
+    Sappho::Data::Publisher::Modules.instance.set :mockConfluence, @mockConfluence
+    @confluence = Sappho::Data::Publisher::Confluence.new
+    Sappho::Data::Publisher::Modules.instance.set moduleName, @confluence
+  end
+
   def teardown
     Sappho::Data::Publisher::Modules.instance.shutdown
   end
