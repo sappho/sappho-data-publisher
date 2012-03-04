@@ -23,8 +23,7 @@ module Sappho
 
         def getGlobalConfiguration
           pageName = @config.data['confluence.global.config.page.name']
-          return getPage @config.data['confluence.config.space.key'], pageName if pageName
-          ''
+          pageName ? getPage @config.data['confluence.config.space.key'], pageName : ''
         end
 
         def getConfiguration
