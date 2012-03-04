@@ -19,12 +19,12 @@ module TestHelper
     Sappho::Data::Publisher::Modules.instance.set :logger, @logger
   end
 
-  def setupConfiguration filename = testFilename('config/config.yml')
+  def setupConfiguration (filename = testFilename('config/config.yml'))
     config = Sappho::Data::Publisher::Configuration.new filename
     Sappho::Data::Publisher::Modules.instance.set :configuration, config
   end
 
-  def setupJira moduleName, dataFilename = testFilename('data/jira.yml')
+  def setupJira (moduleName, dataFilename = testFilename('data/jira.yml'))
     @mockJira = MockJira.new dataFilename
     Sappho::Data::Publisher::Modules.instance.set :mockJira, @mockJira
     @jira = Sappho::Data::Publisher::Jira.new

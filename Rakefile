@@ -6,7 +6,7 @@ task :install => :test
 task :release => :test
 
 Rake::TestTask.new(:test) do |t|
-  t.libs << 'test/sappho-data-publisher'
-  t.pattern = 'test/**/*_test.rb'
+  t.libs << 'test/ruby'
+  t.pattern = 'test/ruby/**/*_test.rb'
   t.verbose = true
 end
