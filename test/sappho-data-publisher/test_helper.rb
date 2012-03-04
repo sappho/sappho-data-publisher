@@ -9,38 +9,34 @@ require 'yaml'
 require 'sappho-data-publisher/modules'
 require 'sappho-data-publisher/configuration'
 require 'sappho-data-publisher/jira'
-require "#{File.dirname(__FILE__)}/mock_jira"
+require 'mock_jira'
 
-module Sappho
-  module Data
-    module Publisher
+module TestHelper
 
-      module TestHelper
-
-        def setupLogging
-          @logger = Logger.new STDOUT
-          @logger.level = Logger::DEBUG
-          Modules.instance.set :logger, @logger
-        end
-
-        def setupConfiguration filename = "#{File.dirname(__FILE__)}/../config/config.yml"
-          config = Configuration.new filename
-          Modules.instance.set :configuration, config
-        end
-
-        def setupJira moduleName
-          @mockJira = MockJira.new
-          Modules.instance.set :mockJira, @mockJira
-          @jira = Jira.new
-          Modules.instance.set moduleName, @jira
-        end
-
-        def teardown
-          Modules.instance.shutdown
-        end
-
-      end
-
-    end
+  def setupLogging
+    @logger = Logger.new STDOUT
+    @logger.level = Logger::DEBUG
+    Sappho::Data::Publisher::Modules.instance.set :logger, @logger
   end
+
+  def setupConfiguration filename = testFilename('config/config.yml')
+    config = Sappho::Data::Publisher::Configuration.new filename
+    Sappho::Data::Publisher::Modules.instance.set :configuration, config
+  end
+
+  def setupJira moduleName, dataFilename = testFilename('data/jira.yml')
+    @mockJira = MockJira.new dataFilename
+    Sappho::Data::Publisher::Modules.instance.set :mockJira, @mockJira
+    @jira = Sappho::Data::Publisher::Jira.new
+    Sappho::Data::Publisher::Modules.instance.set moduleName, @jira
+  end
+
+  def teardown
+    Sappho::Data::Publisher::Modules.instance.shutdown
+  end
+
+  def testFilename filename
+    "#{File.dirname(__FILE__)}/../#{filename}"
+  end
+
 end
