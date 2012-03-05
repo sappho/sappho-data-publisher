@@ -2,7 +2,24 @@ This is ignored.
 So is this.
 {noformat}
 This is not ignored.
+
+And the above blank line should be included.
+
+
+
+And the above blank lines, and below, should be included.
+
+
 {noformat}
+
+Try a one-liner.
+{noformat}This one-liner is not ignored.
+{noformat}
+
+Try another one-liner.
+{noformat}This one-liner is not ignored.{noformat} <- the trailing {noformat} will be included because it isn't at column 1.
+{noformat}
+
 This is ignored.
 {noformat:nopanel=true}
 This is not ignored, either.
