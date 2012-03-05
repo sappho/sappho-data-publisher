@@ -11,26 +11,29 @@ module Sappho
 
       class AtlassianApp
 
-        @appServer = nil
-        @loggedIn = false
+        def initialize
+          @appName = self.class.name.split("::").last
+          @appServer = nil
+          @loggedIn = false
+        end
 
         def connect
-          raise "you have already attempted to connect to #{self.class.name}" if @appServer or @loggedIn
+          raise "you have already attempted to connect to #{@appName}" if @appServer or @loggedIn
           modules = Modules.instance
-          config = modules.get :configuration
+          @config = modules.get :configuration
           @logger = modules.get :logger
-          url = config.data["#{self.class.name.downcase}.url"]
-          mock = "mock#{self.class.name}"
-          @appServer = modules.set?(mock) ? modules.get(mock).mockInstance(url) : yield url
-          @token = @appServer.login config.data["#{self.class.name.downcase}.username"], config.data["#{self.class.name.downcase}.password"]
-          @logger.info "logged into #{self.class.name} #{url}"
+          url = @config.data["#{@appName.downcase}.url"]
+          mock = "mock#{@appName}"
+          @appServer = modules.set?(mock) ? modules.get(mock).mockInstance(url) : yield(url)
+          @token = @appServer.login @config.data["#{@appName.downcase}.username"], @config.data["#{@appName.downcase}.password"]
+          @logger.info "logged into #{@appName} #{url}"
           @loggedIn = true
         end
 
         def shutdown
           if loggedIn?
             @appServer.logout @token
-            @logger.info "logged out of #{self.class.name}"
+            @logger.info "logged out of #{@appName}"
           end
           @loggedIn = false
           @appServer = nil
@@ -43,7 +46,7 @@ module Sappho
         private
 
         def checkLoggedIn
-          raise "you are not logged in to #{self.class.name}" unless loggedIn?
+          raise "you are not logged in to #{@appName}" unless loggedIn?
         end
 
       end

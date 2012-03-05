@@ -3,7 +3,7 @@
 # See http://www.gnu.org/licenses/agpl.html for full details of the license terms.
 # Copyright 2012 Andrew Heald.
 
-require 'sappho-data-publisher/modules'
+require 'sappho-data-publisher/atlassian_app'
 require 'xmlrpc/client'
 
 module Sappho
@@ -13,12 +13,9 @@ module Sappho
       class Confluence
 
         def connect
-          @config = Modules.instance.get :configuration
-          @logger = Modules.instance.get :logger
-          url = @config.data['confluence.url']
-          @wiki = XMLRPC::Client.new2("#{url}/rpc/xmlrpc").proxy('confluence1')
-          @token = @wiki.login @config.data['confluence.username'], @config.data['confluence.password']
-          @logger.info "Confluence #{url} is online"
+          super do |url|
+            XMLRPC::Client.new2("#{url}/rpc/xmlrpc").proxy('confluence1')
+          end
         end
 
         def getGlobalConfiguration
@@ -42,32 +39,29 @@ module Sappho
           setPage parameters['space'], parameters['parent'], pageData['pagename'], content
         end
 
-        def shutdown
-          @wiki.logout @token
-          @logger.info 'disconnected from Confluence'
-        end
-
         private
 
         def getPage spaceKey, pageName
+          checkLoggedIn
           @logger.info "reading wiki page #{spaceKey}:#{pageName}"
-          @wiki.getPage(@token, spaceKey, pageName)['content']
+          @appServer.getPage(@token, spaceKey, pageName)['content']
         end
 
         def setPage spaceKey, parentPageName, pageName, content
+          checkLoggedIn
           begin
-            page = @wiki.getPage(@token, spaceKey, pageName)
+            page = @appServer.getPage(@token, spaceKey, pageName)
             page['content'] = content
             @logger.info "rewriting existing wiki page #{spaceKey}:#{pageName}"
           rescue
             page = {
               'space' => spaceKey,
-              'parentId' => @wiki.getPage(@token, spaceKey, parentPageName)['id'],
+              'parentId' => @appServer.getPage(@token, spaceKey, parentPageName)['id'],
               'title' => pageName,
               'content' => content }
             @logger.info "creating new wiki page #{spaceKey}:#{pageName} as child of #{parentPageName}"
           end
-          @wiki.storePage @token, page
+          @appServer.storePage @token, page
         end
 
       end

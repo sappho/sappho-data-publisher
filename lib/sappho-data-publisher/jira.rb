@@ -3,7 +3,7 @@
 # See http://www.gnu.org/licenses/agpl.html for full details of the license terms.
 # Copyright 2012 Andrew Heald.
 
-require 'atlassian_app'
+require 'sappho-data-publisher/atlassian_app'
 require 'soap/wsdlDriver'
 
 module Sappho
