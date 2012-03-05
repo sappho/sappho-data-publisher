@@ -26,14 +26,14 @@ class Test::Unit::TestCase
 
   def setupJira (moduleName, dataFilename = testFilename('data/jira.yml'))
     @mockJira = MockJira.new dataFilename
-    Sappho::Data::Publisher::Modules.instance.set :mockJira, @mockJira
+    Sappho::Data::Publisher::Modules.instance.set 'mockJira', @mockJira
     @jira = Sappho::Data::Publisher::Jira.new
     Sappho::Data::Publisher::Modules.instance.set moduleName, @jira
   end
 
   def setupConfluence moduleName
     @mockConfluence = MockConfluence.new
-    Sappho::Data::Publisher::Modules.instance.set :mockConfluence, @mockConfluence
+    Sappho::Data::Publisher::Modules.instance.set 'mockConfluence', @mockConfluence
     @confluence = Sappho::Data::Publisher::Confluence.new
     Sappho::Data::Publisher::Modules.instance.set moduleName, @confluence
   end
