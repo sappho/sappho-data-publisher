@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.files         = Dir['bin/*'] + Dir['lib/**/*']
   s.test_files    = Dir['test/**/*']
   s.executables   = Dir['bin/*'].map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  s.require_paths = ['lib']
 
   # specify any dependencies here; for example:
   # s.add_development_dependency "rspec"

@@ -4,7 +4,7 @@
 # Copyright 2012 Andrew Heald.
 
 require 'rubygems'
-gem 'liquid', '>= 2.3.0'
+gem 'liquid'
 require 'liquid'
 require 'sappho-data-publisher/custom_liquid'
 require 'helper'
