@@ -7,7 +7,7 @@ module Sappho
   module Data
     module Publisher
       NAME = 'sappho-data-publisher'
-      VERSION = '0.1.7'
+      VERSION = '0.1.8'
       AUTHORS = ['Andrew Heald']
       EMAILS = ['andrew@heald.co.uk']
       HOMEPAGE = 'https://github.com/sappho/sappho-data-publisher/wiki'
