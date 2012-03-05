@@ -16,7 +16,7 @@ class JiraTest < Test::Unit::TestCase
 
   def teardown
     assert @jira.loggedIn?, 'Jira should be logged in before shutdown'
-    Sappho::Data::Publisher::Modules.instance.shutdown
+    super
     assert !@jira.loggedIn?, 'Jira should not be logged in after shutdown'
   end
 

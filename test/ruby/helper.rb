@@ -9,7 +9,9 @@ require 'yaml'
 require 'sappho-data-publisher/modules'
 require 'sappho-data-publisher/configuration'
 require 'sappho-data-publisher/jira'
+require 'sappho-data-publisher/confluence'
 require 'mock_jira'
+require 'mock_confluence'
 
 class Test::Unit::TestCase
 
