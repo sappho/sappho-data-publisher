@@ -19,6 +19,7 @@ class MockConfluence < MockAtlassianApp
   end
 
   def getPage token, spaceKey, pageName
+    assert_token_valid token
     space = @pageCache[spaceKey]
     @pageCache[spaceKey] = space = {} unless space
     content = space[pageName]
@@ -34,7 +35,12 @@ class MockConfluence < MockAtlassianApp
   end
 
   def storePage token, page
+    assert_token_valid token
     @pageCache[page['space']][page['title']] = page['content']
+  end
+
+  def assert_page_content spaceKey, pageName, expectedContent
+    raise 'page content is not as expected' unless @pageCache[spaceKey][pageName] == expectedContent
   end
 
 end

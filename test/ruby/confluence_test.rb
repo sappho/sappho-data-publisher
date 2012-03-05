@@ -46,13 +46,21 @@ class ConfluenceTest < Test::Unit::TestCase
 
   def test_publish_page
     connect
-    params = {
-        'space' => 'MYSPACE',
-        'parent' => 'Home',
-        'pagename' => 'Generated Page'
+    spaceKey = 'MYSPACE'
+    pageName = 'Generated Page'
+    pageData = {
+        'pagename' => pageName
     }
-    @confluence.publish 'New page content.', {}, params
-    @confluence.publish 'Updated page content.', {}, params
+    params = {
+        'space' => spaceKey,
+        'parent' => 'Home'
+    }
+    content = 'New page content.'
+    @confluence.publish content, pageData, params
+    @mockConfluence.assert_page_content spaceKey, pageName, content
+    content = 'Updated page content.'
+    @confluence.publish content, pageData, params
+    @mockConfluence.assert_page_content spaceKey, pageName, content
   end
 
   def test_config_chunking
