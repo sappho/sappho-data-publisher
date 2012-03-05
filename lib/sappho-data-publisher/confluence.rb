@@ -32,7 +32,7 @@ module Sappho
         end
 
         def getScript rawPage
-          rawPage.scan(/\{noformat.*?\}(.*?)\{noformat\}/m).each { |pageData| yield pageData[0] }
+          rawPage.scan(/^\{noformat.*?\}(.*?)^\{noformat\}/m).each { |pageData| yield pageData[0] }
         end
 
         def publish content, pageData, parameters
