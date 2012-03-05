@@ -20,8 +20,8 @@ class CustomLiquidTest < Test::Unit::TestCase
   end
 
   def test_page_generation
-    template = File.open(testFilename('data/custom_liquid.template'), 'rb').read
-    assert_equal File.open(testFilename('data/custom_liquid.content'), 'rb').read,
+    template = File.open(testFilename('data/custom-liquid.template'), 'rb').read
+    assert_equal File.open(testFilename('data/custom-liquid.content'), 'rb').read,
                  Liquid::Template.parse(template).render
   end
 
