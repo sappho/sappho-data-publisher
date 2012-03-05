@@ -1,5 +1,24 @@
 This is ignored.
+So is this.
 {noformat}
-This is not.
+This is not ignored.
 {noformat}
 This is ignored.
+{noformat:nopanel=true}
+This is not ignored, either.
+ {noformat} <- And this line should be included.
+{noformat}
+{noformat xx}
+It does not matter about extra invalid stuff on the opening {noformat}.
+{noformat}
+
+Test for an invalid closing {noformat}.
+{noformat}
+Invalid closing: Line 1
+{noformatx}
+Invalid closing: Line 2
+{noformat}
+
+Finally, test what happens when a chunk is left open.
+{noformat}
+This will not end up in a chunk!

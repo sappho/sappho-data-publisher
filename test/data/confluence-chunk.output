@@ -1,2 +1,11 @@
-
-This is not.
+----
+This is not ignored.
+----
+This is not ignored, either.
+ {noformat} <- And this line should be included.
+----
+It does not matter about extra invalid stuff on the opening {noformat}.
+----
+Invalid closing: Line 1
+{noformatx}
+Invalid closing: Line 2
