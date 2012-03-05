@@ -13,4 +13,28 @@ class MockConfluence < MockAtlassianApp
     super 'https://wiki.example.com', 'wikiuser', 'secretwikipassword'
   end
 
+  def setScenario scenario
+    @scenario = scenario
+    @pageCache = {}
+  end
+
+  def getPage token, spaceKey, pageName
+    space = @pageCache[spaceKey]
+    @pageCache[spaceKey] = space = {} unless space
+    content = space[pageName]
+    unless content
+      space[pageName] = content =
+          File.open("#{File.dirname(__FILE__)}/../data/confluence-pages/#{@scenario}/#{spaceKey}/#{pageName}.wiki", 'rb').read
+    end
+    {
+        'space' => spaceKey,
+        'title' => pageName,
+        'content' => content
+    }
+  end
+
+  def storePage token, page
+    @pageCache[page['space']][page['title']] = page['content']
+  end
+
 end

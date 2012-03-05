@@ -10,7 +10,7 @@ module Sappho
   module Data
     module Publisher
 
-      class Confluence
+      class Confluence < AtlassianApp
 
         def connect
           super do |url|
