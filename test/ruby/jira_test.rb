@@ -8,7 +8,6 @@ require 'helper'
 class JiraTest < Test::Unit::TestCase
 
   def setup
-    setupLogging
     setupConfiguration
     setupJira 'Jira'
     @expectedResults = YAML.load_file testFilename 'data/jira-results.yml'

@@ -8,7 +8,6 @@ require 'helper'
 class ConfluenceTest < Test::Unit::TestCase
 
   def setup
-    setupLogging
     setupConfiguration
     setupConfluence 'Confluence'
     @mockConfluence.setScenario 'page-op-tests'

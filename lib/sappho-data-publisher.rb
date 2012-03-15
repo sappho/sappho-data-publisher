@@ -3,8 +3,7 @@
 # See http://www.gnu.org/licenses/agpl.html for full details of the license terms.
 # Copyright 2012 Andrew Heald.
 
-require 'logger'
-require 'sappho-data-publisher/modules'
+require 'sappho-basics/module_register'
 require 'sappho-data-publisher/publisher'
 require 'sappho-data-publisher/configuration'
 require 'sappho-data-publisher/confluence'
@@ -19,13 +18,9 @@ module Sappho
       class CommandLine
 
         def CommandLine.process
-          $stdout.sync = true
-          logger = Logger.new $stdout
-          logger.level = Logger::INFO
-          logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
-          logger.info "sappho-data-publisher version #{VERSION} - #{HOMEPAGE}"
-          modules = Modules.instance
-          modules.set :logger, logger
+          ENV['application.log.detail'] = 'message'
+          modules = Sappho::ModuleRegister.instance
+          modules.get(:log).info "sappho-data-publisher version #{VERSION} - #{HOMEPAGE}"
           modules.set :configuration, Configuration.new
           jira = Jira.new
           jira.connect

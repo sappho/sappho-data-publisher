@@ -3,11 +3,9 @@
 # See http://www.gnu.org/licenses/agpl.html for full details of the license terms.
 # Copyright 2012 Andrew Heald.
 
-require 'rubygems'
-gem 'liquid'
 require 'liquid'
 require 'yaml'
-require 'sappho-data-publisher/modules'
+require 'sappho-basics/module_register'
 
 module Sappho
   module Data
@@ -16,8 +14,8 @@ module Sappho
       class Publisher
 
         def publish
-          modules = Modules.instance
-          logger = modules.get :logger
+          modules = Sappho::ModuleRegister.instance
+          logger = modules.get :log
           configurator = modules.get modules.get(:configuration).data['config.module']
           globalScript = ''
           configurator.getScript(configurator.getGlobalConfiguration) { |configChunk| globalScript += configChunk }

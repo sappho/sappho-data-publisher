@@ -3,10 +3,8 @@
 # See http://www.gnu.org/licenses/agpl.html for full details of the license terms.
 # Copyright 2012 Andrew Heald.
 
-require 'rubygems'
-gem 'liquid'
 require 'liquid'
-require 'sappho-data-publisher/modules'
+require 'sappho-basics/module_register'
 
 module Sappho
   module Data
@@ -24,7 +22,7 @@ module Sappho
 
           def fullname username
             begin
-              name = Modules.instance.get('AddressBook').getUserFullName(username)
+              name = Sappho::ModuleRegister.instance.get('AddressBook').getUserFullName(username)
               raise 'unknown person' unless name and name.length > 0
             rescue
               name = '** John Doe **'
