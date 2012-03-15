@@ -3,9 +3,9 @@
 # See http://www.gnu.org/licenses/agpl.html for full details of the license terms.
 # Copyright 2012 Andrew Heald.
 
+require 'helper'
 require 'liquid'
 require 'sappho-data-publisher/custom_liquid'
-require 'helper'
 
 class CustomLiquidTest < Test::Unit::TestCase
 
