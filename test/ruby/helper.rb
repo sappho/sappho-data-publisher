@@ -4,6 +4,8 @@
 # Copyright 2012 Andrew Heald.
 
 require 'rubygems'
+gem 'liquid'
+gem 'sappho-basics'
 require 'test/unit'
 require 'yaml'
 require 'sappho-basics/module_register'
