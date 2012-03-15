@@ -3,7 +3,8 @@
 # See http://www.gnu.org/licenses/agpl.html for full details of the license terms.
 # Copyright 2012 Andrew Heald.
 
-require "test/unit"
+require 'rubygems'
+require 'test/unit'
 require 'yaml'
 require 'sappho-basics/module_register'
 require 'sappho-data-publisher/configuration'
