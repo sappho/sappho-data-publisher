@@ -19,7 +19,7 @@ module Sappho
 
         def connect
           raise "you have already attempted to connect to #{@appName}" if @appServer or @loggedIn
-          modules = Sappho::ModuleRegister.instance
+          modules = Sappho::ApplicationModuleRegister.instance
           @config = modules.get :configuration
           @logger = modules.get :log
           url = @config.data["#{@appName.downcase}.url"]

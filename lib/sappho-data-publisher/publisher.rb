@@ -14,7 +14,7 @@ module Sappho
       class Publisher
 
         def publish
-          modules = Sappho::ModuleRegister.instance
+          modules = Sappho::ApplicationModuleRegister.instance
           logger = modules.get :log
           configurator = modules.get modules.get(:configuration).data['config.module']
           globalScript = ''

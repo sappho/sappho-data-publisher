@@ -17,7 +17,7 @@ module Sappho
         def initialize filename = ARGV[0]
           filename = File.expand_path(filename || 'config.yml')
           @data = YAML.load_file filename
-          Sappho::ModuleRegister.instance.get(:log).info "configuration loaded from #{filename}"
+          Sappho::ApplicationModuleRegister.instance.get(:log).info "configuration loaded from #{filename}"
         end
 
       end

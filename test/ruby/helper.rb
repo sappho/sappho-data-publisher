@@ -19,25 +19,25 @@ class Test::Unit::TestCase
 
   def setupConfiguration (filename = testFilename('config/config.yml'))
     config = Sappho::Data::Publisher::Configuration.new filename
-    Sappho::ModuleRegister.instance.set :configuration, config
+    Sappho::ApplicationModuleRegister.instance.set :configuration, config
   end
 
   def setupJira (moduleName, dataFilename = testFilename('data/jira.yml'))
     @mockJira = MockJira.new dataFilename
-    Sappho::ModuleRegister.instance.set 'mockJira', @mockJira
+    Sappho::ApplicationModuleRegister.instance.set 'mockJira', @mockJira
     @jira = Sappho::Data::Publisher::Jira.new
-    Sappho::ModuleRegister.instance.set moduleName, @jira
+    Sappho::ApplicationModuleRegister.instance.set moduleName, @jira
   end
 
   def setupConfluence moduleName
     @mockConfluence = MockConfluence.new
-    Sappho::ModuleRegister.instance.set 'mockConfluence', @mockConfluence
+    Sappho::ApplicationModuleRegister.instance.set 'mockConfluence', @mockConfluence
     @confluence = Sappho::Data::Publisher::Confluence.new
-    Sappho::ModuleRegister.instance.set moduleName, @confluence
+    Sappho::ApplicationModuleRegister.instance.set moduleName, @confluence
   end
 
   def teardown
-    Sappho::ModuleRegister.instance.shutdown
+    Sappho::ApplicationModuleRegister.instance.shutdown
   end
 
   def testFilename filename

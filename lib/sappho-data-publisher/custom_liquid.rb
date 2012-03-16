@@ -22,7 +22,7 @@ module Sappho
 
           def fullname username
             begin
-              name = Sappho::ModuleRegister.instance.get('AddressBook').getUserFullName(username)
+              name = Sappho::ApplicationModuleRegister.instance.get('AddressBook').getUserFullName(username)
               raise 'unknown person' unless name and name.length > 0
             rescue
               name = '** John Doe **'

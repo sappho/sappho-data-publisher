@@ -19,7 +19,7 @@ module Sappho
 
         def CommandLine.process
           ENV['application.log.detail'] = 'message'
-          modules = Sappho::ModuleRegister.instance
+          modules = Sappho::ApplicationModuleRegister.instance
           modules.get(:log).info "sappho-data-publisher version #{VERSION} - #{HOMEPAGE}"
           modules.set :configuration, Configuration.new
           jira = Jira.new
