@@ -23,8 +23,11 @@ module Sappho
         def gatherData pageData, parameters
           checkLoggedIn
           id = parameters['id']
-          @logger.info "reading Jira issue #{id}"
-          issue = @appServer.getIssue @token, id
+          @logger.info "fetching Jira issue #{id}"
+          getJiraDetails @appServer.getIssue(@token, id), pageData
+        end
+
+        def getJiraDetails issue, pageData
           pageData['summary'] = summary = issue['summary']
           pageData['pagename'] = summary unless pageData['pagename']
           pageData['description'] = issue['description']

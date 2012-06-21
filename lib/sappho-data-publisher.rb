@@ -8,6 +8,7 @@ require 'sappho-data-publisher/publisher'
 require 'sappho-data-publisher/configuration'
 require 'sappho-data-publisher/confluence'
 require 'sappho-data-publisher/jira'
+require 'sappho-data-publisher/jira_filter'
 require 'sappho-data-publisher/jira_users'
 require 'sappho-data-publisher/custom_liquid'
 require 'sappho-data-publisher/version'
@@ -27,6 +28,9 @@ module Sappho
           jira.connect
           modules.set 'Jira', jira
           modules.set 'AddressBook', jira
+          jiraFilter = JiraFilter.new
+          jiraFilter.connect
+          modules.set 'JiraFilter', jiraFilter
           jiraUsers = JiraUsers.new
           jiraUsers.connect
           modules.set 'JiraUsers', jiraUsers
