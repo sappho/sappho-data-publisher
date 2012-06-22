@@ -22,12 +22,37 @@ module Sappho
 
         def gatherData pageData, parameters
           checkLoggedIn
-          id = parameters['id']
-          @logger.info "fetching Jira issue #{id}"
-          getJiraDetails @appServer.getIssue(@token, id), pageData
+          # process a single issue fetch request
+          if id = parameters['id']
+            @logger.info "fetching Jira issue #{id}"
+            getJiraIssueDetails @appServer.getIssue(@token, id), pageData
+          end
+          # process a multi-issue, via filter, fetch request
+          if filterId = parameters['filterId']
+            @logger.info "fetching all Jira issues included in filter #{filterId}"
+            issues = @appServer.getIssuesFromFilter @token, filterId
+            pageData['issues'] = cookedIssues = []
+            issues.each { |issue|
+              cookedIssue = { 'key' => issue['key'] }
+              getJiraIssueDetails issue, cookedIssue
+              cookedIssues << cookedIssue
+            }
+          end
+          # process a group membership fetch request
+          if groupName = parameters['groupName']
+            @logger.info "fetching membership of Jira user group #{groupName}"
+            group = @appServer.getGroup @token, groupName
+            pageData['users'] = users = []
+            group['users'].each {
+                |user| users << {
+                  'username' => user['name'],
+                  'fullName' => user['fullname'],
+                  'email' => user['email']
+            }}
+          end
         end
 
-        def getJiraDetails issue, pageData
+        def getJiraIssueDetails issue, pageData
           pageData['summary'] = summary = issue['summary']
           pageData['pagename'] = summary unless pageData['pagename']
           pageData['description'] = issue['description']
