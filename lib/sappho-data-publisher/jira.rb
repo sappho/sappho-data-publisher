@@ -53,9 +53,11 @@ module Sappho
         end
 
         def getJiraIssueDetails issue, pageData
-          pageData['summary'] = summary = issue['summary']
-          pageData['pagename'] = summary unless pageData['pagename']
-          pageData['description'] = issue['description']
+          ['summary', 'description', 'assignee', 'components', 'created', 'duedate', 'priority',
+           'project', 'reporter', 'resolution', 'status', 'type', 'updated'].each { |key|
+            pageData[key] = issue[key]
+          }
+          pageData['pagename'] = issue['summary'] unless pageData['pagename']
           pageData['cf'] = customFields = {}
           @allCustomFields.each { |customField|
             customFields[cfname customField['id']] = { 'name' => customField['name'] }
