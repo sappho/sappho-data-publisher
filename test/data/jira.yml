@@ -11,6 +11,17 @@ issues:
   TEST-42:
     summary: Testing 123
     description: This is a test.
+    assignee:
+    components:
+    created:
+    duedate:
+    priority:
+    project:
+    reporter:
+    resolution:
+    status:
+    type:
+    updated:
     customFieldValues:
       - { customfieldId: customfield_10501, values: [ Business Process ] }
       - { customfieldId: customfield_10503, values: [ Bank of England ] }

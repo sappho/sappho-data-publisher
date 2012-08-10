@@ -5,6 +5,17 @@ TEST-42-A:
   summary: Testing 123
   pagename: Testing 123
   description: This is a test.
+  assignee:
+  components:
+  created:
+  duedate:
+  priority:
+  project:
+  reporter:
+  resolution:
+  status:
+  type:
+  updated:
   cf:
     !str 10500: { name: Service }
     !str 10501: { name: Type, values: [ Business Process ] }
@@ -15,6 +26,17 @@ TEST-42-B:
   summary: Testing 123
   pagename: Test Page
   description: This is a test.
+  assignee:
+  components:
+  created:
+  duedate:
+  priority:
+  project:
+  reporter:
+  resolution:
+  status:
+  type:
+  updated:
   cf:
     !str 10500: { name: Service }
     !str 10501: { name: Type, values: [ Business Process ] }
