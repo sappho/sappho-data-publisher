@@ -55,24 +55,24 @@ class JiraTest < Test::Unit::TestCase
 
   def test_data_gathering_pagename_as_summary
     # pagename will be a copy of the issue summary
-    assert_data_gathered({}, { 'id' => 'TEST-42' }, 'TEST-42-A')
+    assert_data_gathered({}, {'key' => 'TEST-42'}, 'TEST-42-A')
   end
 
   def test_data_gathering_pagename_as_supplied
     # pagename supplied already so should not be set by data gatherer
-    assert_data_gathered({ 'pagename' => 'Test Page' }, { 'id' => 'TEST-42' }, 'TEST-42-B')
+    assert_data_gathered({'pagename' => 'Test Page'}, {'key' => 'TEST-42'}, 'TEST-42-B')
   end
 
   def test_data_gathering_from_invalid_issue
     assert_raise RuntimeError do
-      assert_data_gathered({}, { 'id' => 'TEST-999' }, nil)
+      assert_data_gathered({}, {'key' => 'TEST-999'}, nil)
     end
   end
 
   def test_data_gathering_without_connecting
     assert_raise RuntimeError do
       # this would be okay if connected, but we're not
-      assert_data_gathered({}, { 'id' => 'TEST-42' }, 'TEST-42-A', true)
+      assert_data_gathered({}, {'key' => 'TEST-42'}, 'TEST-42-A', true)
     end
     # keep the teardown happy by connecting anyway
     connect

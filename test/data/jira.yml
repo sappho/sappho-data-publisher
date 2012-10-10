@@ -9,10 +9,12 @@ users:
 issues:
 
   TEST-42:
+    id: 1234
+    key: TEST-42
     summary: Testing 123
     description: This is a test.
     assignee:
-    components:
+    components: []
     created:
     duedate:
     priority:

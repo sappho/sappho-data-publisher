@@ -23,10 +23,10 @@ class MockJira < MockAtlassianApp
     @allCustomFields
   end
 
-  def getIssue token, id
+  def getIssue token, key
     assert_token_valid token
-    raise 'issue does not exist' unless @issues.has_key? id
-    @issues[id]
+    raise 'issue does not exist' unless @issues.has_key? key
+    @issues[key]
   end
 
   def getUser token, username
@@ -34,6 +34,11 @@ class MockJira < MockAtlassianApp
     @getUserCount += 1
     raise 'user unknown' unless @users.has_key? username
     @users[username]
+  end
+
+  def getIssuesFromJqlSearch token, jql, maxResults
+    assert_token_valid token
+    return []
   end
 
 end

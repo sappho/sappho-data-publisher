@@ -2,43 +2,51 @@
 # See http://yaml.org/spec for syntax help
 
 TEST-42-A:
-  summary: Testing 123
   pagename: Testing 123
-  description: This is a test.
-  assignee:
-  components:
-  created:
-  duedate:
-  priority:
-  project:
-  reporter:
-  resolution:
-  status:
-  type:
-  updated:
-  cf:
-    !str 10500: { name: Service }
-    !str 10501: { name: Type, values: [ Business Process ] }
-    !str 10502: { name: Invoice Number }
-    !str 10503: { name: Customer, values: [ Bank of England ] }
+  issues:
+    - id: 1234
+      key: TEST-42
+      summary: Testing 123
+      description: This is a test.
+      assignee:
+      components: []
+      created:
+      duedate:
+      priority:
+      project:
+      reporter:
+      resolution:
+      status:
+      type:
+      updated:
+      cf:
+        !str 10500: { name: Service }
+        !str 10501: { name: Type, values: [ Business Process ] }
+        !str 10502: { name: Invoice Number }
+        !str 10503: { name: Customer, values: [ Bank of England ] }
+      subtasks: []
 
 TEST-42-B:
-  summary: Testing 123
   pagename: Test Page
-  description: This is a test.
-  assignee:
-  components:
-  created:
-  duedate:
-  priority:
-  project:
-  reporter:
-  resolution:
-  status:
-  type:
-  updated:
-  cf:
-    !str 10500: { name: Service }
-    !str 10501: { name: Type, values: [ Business Process ] }
-    !str 10502: { name: Invoice Number }
-    !str 10503: { name: Customer, values: [ Bank of England ] }
+  issues:
+    - id: 1234
+      key: TEST-42
+      summary: Testing 123
+      description: This is a test.
+      assignee:
+      components: []
+      created:
+      duedate:
+      priority:
+      project:
+      reporter:
+      resolution:
+      status:
+      type:
+      updated:
+      cf:
+        !str 10500: { name: Service }
+        !str 10501: { name: Type, values: [ Business Process ] }
+        !str 10502: { name: Invoice Number }
+        !str 10503: { name: Customer, values: [ Bank of England ] }
+      subtasks: []

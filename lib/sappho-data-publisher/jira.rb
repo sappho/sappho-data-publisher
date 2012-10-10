@@ -23,20 +23,23 @@ module Sappho
         def gatherData pageData, parameters
           checkLoggedIn
           # process a single issue fetch request
-          if id = parameters['id']
-            @logger.info "fetching Jira issue #{id}"
-            getJiraIssueDetails @appServer.getIssue(@token, id), pageData
+          if key = parameters['key']
+            @logger.info "fetching Jira issue #{key}"
+            issue = @appServer.getIssue(@token, key)
+            pageData['pagename'] = issue['summary'] unless pageData['pagename']
+            processIssues pageData, [issue]
           end
           # process a multi-issue, via filter, fetch request
           if filterId = parameters['filterId']
             @logger.info "fetching all Jira issues included in filter #{filterId}"
             issues = @appServer.getIssuesFromFilter @token, filterId
-            pageData['issues'] = cookedIssues = []
-            issues.each { |issue|
-              cookedIssue = { 'key' => issue['key'] }
-              getJiraIssueDetails issue, cookedIssue
-              cookedIssues << cookedIssue
-            }
+            processIssues pageData, issues
+          end
+          # process a multi-issue, via JQL, fetch request
+          if jql = parameters['jql']
+            maxResults = parameters['max']
+            issues = jqlQuery jql, maxResults
+            processIssues pageData, issues
           end
           # process a group membership fetch request
           if groupName = parameters['groupName']
@@ -48,24 +51,8 @@ module Sappho
                   'username' => user['name'],
                   'fullName' => user['fullname'],
                   'email' => user['email']
-            }}
+              } }
           end
-        end
-
-        def getJiraIssueDetails issue, pageData
-          ['summary', 'description', 'assignee', 'components', 'created', 'duedate', 'priority',
-           'project', 'reporter', 'resolution', 'status', 'type', 'updated'].each { |key|
-            pageData[key] = issue[key]
-          }
-          pageData['pagename'] = issue['summary'] unless pageData['pagename']
-          pageData['cf'] = customFields = {}
-          @allCustomFields.each { |customField|
-            customFields[cfname customField['id']] = { 'name' => customField['name'] }
-          }
-          issue['customFieldValues'].each { |customFieldValue|
-            customFields[cfname customFieldValue['customfieldId']]['values'] =
-                customFieldValue['values']
-          }
         end
 
         def getUserFullName username
@@ -79,6 +66,44 @@ module Sappho
         end
 
         private
+
+        def processIssues pageData, issues
+          pageData['issues'] = cookedIssues = []
+          cookIssues issues, cookedIssues
+        end
+
+        def jqlQuery jql, maxresults
+          @logger.info "fetching up to #{maxresults} Jira issues for #{jql}"
+          return @appServer.getIssuesFromJqlSearch @token, jql, maxresults
+        end
+
+        def getJiraIssueDetails issue, cookedIssue
+          ['id', 'key', 'summary', 'description', 'assignee', 'created', 'duedate', 'priority',
+           'project', 'reporter', 'resolution', 'status', 'type', 'updated'].each { |key|
+            cookedIssue[key] = issue[key]
+          }
+          cookedIssue['components'] = components = []
+          issue['components'].each { |component| components << component['name'] }
+          cookedIssue['cf'] = customFields = {}
+          @allCustomFields.each { |customField|
+            customFields[cfname customField['id']] = {'name' => customField['name']}
+          }
+          issue['customFieldValues'].each { |customFieldValue|
+            customFields[cfname customFieldValue['customfieldId']]['values'] =
+                customFieldValue['values']
+          }
+          cookedIssue['subtasks'] = cookedSubtasks = []
+          subtasks = jqlQuery "parent=#{issue['key']}", 100
+          cookIssues subtasks, cookedSubtasks
+        end
+
+        def cookIssues issues, cookedIssues
+          issues.each { |issue|
+            cookedIssue = {}
+            getJiraIssueDetails issue, cookedIssue
+            cookedIssues << cookedIssue
+          }
+        end
 
         def cfname name
           name.sub /customfield_/, ''
