@@ -43,25 +43,30 @@ module Sappho
 
         def getPage spaceKey, pageName
           checkLoggedIn
+          logout
+          login
           @logger.info "reading wiki page #{spaceKey}:#{pageName}"
           @appServer.getPage(@token, spaceKey, pageName)['content']
         end
 
         def setPage spaceKey, parentPageName, pageName, content
           checkLoggedIn
+          logout
+          login
           begin
-            page = @appServer.getPage(@token, spaceKey, pageName)
+            page = @appServer.getPage @token, spaceKey, pageName
             page['content'] = content
             @logger.info "rewriting existing wiki page #{spaceKey}:#{pageName}"
+            @appServer.updatePage @token, page, {'versionComment' => "Automatic update", 'minorEdit' => false}
           rescue
             page = {
-              'space' => spaceKey,
-              'parentId' => @appServer.getPage(@token, spaceKey, parentPageName)['id'],
-              'title' => pageName,
-              'content' => content }
+                'space' => spaceKey,
+                'parentId' => @appServer.getPage(@token, spaceKey, parentPageName)['id'],
+                'title' => pageName,
+                'content' => content}
             @logger.info "creating new wiki page #{spaceKey}:#{pageName} as child of #{parentPageName}"
+            @appServer.storePage @token, page
           end
-          @appServer.storePage @token, page
         end
 
       end

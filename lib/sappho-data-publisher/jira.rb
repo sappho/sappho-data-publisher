@@ -74,33 +74,29 @@ module Sappho
 
         def jqlQuery jql, maxresults
           @logger.info "fetching up to #{maxresults} Jira issues for #{jql}"
-          return @appServer.getIssuesFromJqlSearch @token, jql, maxresults
-        end
-
-        def getJiraIssueDetails issue, cookedIssue
-          ['id', 'key', 'summary', 'description', 'assignee', 'created', 'duedate', 'priority',
-           'project', 'reporter', 'resolution', 'status', 'type', 'updated'].each { |key|
-            cookedIssue[key] = issue[key]
-          }
-          cookedIssue['components'] = components = []
-          issue['components'].each { |component| components << component['name'] }
-          cookedIssue['cf'] = customFields = {}
-          @allCustomFields.each { |customField|
-            customFields[cfname customField['id']] = {'name' => customField['name']}
-          }
-          issue['customFieldValues'].each { |customFieldValue|
-            customFields[cfname customFieldValue['customfieldId']]['values'] =
-                customFieldValue['values']
-          }
-          cookedIssue['subtasks'] = cookedSubtasks = []
-          subtasks = jqlQuery "parent=#{issue['key']}", 100
-          cookIssues subtasks, cookedSubtasks
+          @appServer.getIssuesFromJqlSearch @token, jql, maxresults
         end
 
         def cookIssues issues, cookedIssues
           issues.each { |issue|
             cookedIssue = {}
-            getJiraIssueDetails issue, cookedIssue
+            ['id', 'key', 'summary', 'description', 'assignee', 'created', 'duedate', 'priority',
+             'project', 'reporter', 'resolution', 'status', 'type', 'updated'].each { |key|
+              cookedIssue[key] = issue[key]
+            }
+            cookedIssue['components'] = components = []
+            issue['components'].each { |component| components << component['name'] }
+            cookedIssue['cf'] = customFields = {}
+            @allCustomFields.each { |customField|
+              customFields[cfname customField['id']] = {'name' => customField['name']}
+            }
+            issue['customFieldValues'].each { |customFieldValue|
+              customFields[cfname customFieldValue['customfieldId']]['values'] =
+                  customFieldValue['values']
+            }
+            cookedIssue['subtasks'] = cookedSubtasks = []
+            subtasks = jqlQuery "parent=#{issue['key']}", 100
+            cookIssues subtasks, cookedSubtasks
             cookedIssues << cookedIssue
           }
         end

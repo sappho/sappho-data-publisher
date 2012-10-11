@@ -14,33 +14,44 @@ module Sappho
         def initialize
           @appName = self.class.name.split("::").last
           @appServer = nil
-          @loggedIn = false
+          @token = nil
         end
 
         def connect
-          raise "you have already attempted to connect to #{@appName}" if @appServer or @loggedIn
+          raise "you have already attempted to connect to #{@appName}" if @appServer
           modules = Sappho::ApplicationModuleRegister.instance
           @config = modules.get :configuration
           @logger = modules.get :log
           url = @config.data["#{@appName.downcase}.url"]
           mock = "mock#{@appName}"
           @appServer = modules.set?(mock) ? modules.get(mock).mockInstance(url) : yield(url)
+          @logger.info "connected to #{@appName} #{url}"
+          login
+        end
+
+        def login
           @token = @appServer.login @config.data["#{@appName.downcase}.username"], @config.data["#{@appName.downcase}.password"]
-          @logger.info "logged into #{@appName} #{url}"
-          @loggedIn = true
+          @logger.info "logged in to #{@appName}"
+        end
+
+        def logout
+          if loggedIn?
+            begin
+              @appServer.logout @token
+              @logger.info "logged out of #{@appName}"
+            rescue
+            end
+            @token = nil
+          end
         end
 
         def shutdown
-          if loggedIn?
-            @appServer.logout @token
-            @logger.info "logged out of #{@appName}"
-          end
-          @loggedIn = false
+          logout
           @appServer = nil
         end
 
         def loggedIn?
-          @appServer and @loggedIn
+          @token
         end
 
         private
